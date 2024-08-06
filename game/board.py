@@ -1,4 +1,5 @@
-from pieces import Pieces
+from game.pieces import Pieces
+from game.cell import Cell
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
@@ -34,7 +35,7 @@ class Board():
 
     ### Order by pieces, check the piece position, asign the 
     ### piece to the cell that belongs to the position on the grid
-    def set_piece_cell(self):
+    def set_piece_cell_begining(self):
         for i in self.__pieces__:
             position = i.__position__
             x = position[0]
@@ -42,9 +43,3 @@ class Board():
             self.__grid__[x][y].__state__ = False
             self.__grid__[x][y].__piece__ = i
 
-    ### State, True if theres no piece, False if its occupied
-    ###
-class Cell():
-    def __init__(self, state, piece):
-        self.__state__= state
-        self.__piece__ = piece
