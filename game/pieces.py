@@ -1,5 +1,3 @@
-import emoji
-
 class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bishop, Knight, Position = (row , column)
     def __init__(self, piece, color, initial_position):
         self.__name__ = piece
