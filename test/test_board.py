@@ -3,6 +3,7 @@ from io import StringIO
 import sys
 from game.pieces import Pieces
 from game.board import Board
+import emoji
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
