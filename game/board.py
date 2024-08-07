@@ -26,18 +26,28 @@ class Board():
 
     ### Impresion del board y con las piezas en posicion actual
     def print_board(self):
+        self.print_header()
+        self.print_pieces()
+
+    def print_header(self):
         print(' '+'-'*56)
         print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
         print(' '+'-'*56)
+    
+    def print_pieces(self):
         for i in range(8):
-            row = [i]
-            for x in range(8):
+            self.print_rows(i)
+            
+
+    def print_rows(self, i):
+        row = [i] 
+        for x in range(8):
                 if self.__grid__[i][x].__state__ == False:
                     row.append(str(self.__grid__[i][x].__piece__.__image__))
                 else:
                     row += ' '
-            print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format(*row))
-            print(' '+'-'*56)
+        print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format(*row))
+        print(' '+'-'*56)
 
                 
 
