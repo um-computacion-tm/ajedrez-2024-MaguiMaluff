@@ -17,3 +17,7 @@
 - An image to each piece
 - Test for Pieces
 
+# CHANGED
+
+- Function print_board from class Board. Now it prints the pieces in their actual place.
+

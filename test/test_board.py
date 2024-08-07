@@ -11,7 +11,10 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(len(board.__grid__[0]),8,)
    
     def test_print_board(self):
-            board = Board()           
+            board = Board()
+            for i in board.__pieces__:
+                i.set_images()
+            board.set_piece_cell_begining()
             captured_output = StringIO()
             sys.stdout = captured_output
             board.print_board()
@@ -19,16 +22,27 @@ class TestBoard(unittest.TestCase):
             self.maxDiff = None
             
             expected_output = (
-                " --------------------------------------------------\n"
-                "  |  A  |  B  |  C  |  D  |  E  |  F  |  G  |  H  |\n"
-                " --------------------------------------------------\n"
+                " --------------------------------------------------------\n"
+                "        |  A  |  B  |  C  |  D  |  E  |  F  |  G  |  H  |\n"
+                " --------------------------------------------------------\n"
+                "     0  |  r  |  n  |  b  |  q  |  k  |  b  |  n  |  r  |\n"
+                " --------------------------------------------------------\n"
+                "     1  |  p  |  p  |  p  |  p  |  p  |  p  |  p  |  p  |\n"
+                " --------------------------------------------------------\n"
+                "     2  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     3  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     4  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     5  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     6  |  P  |  P  |  P  |  P  |  P  |  P  |  P  |  P  |\n"
+                " --------------------------------------------------------\n"
+                "     7  |  R  |  N  |  B  |  Q  |  K  |  B  |  N  |  R  |\n"
+                " --------------------------------------------------------\n"
+
             )
-            for i in range(8):
-                expected_output += (
-                    f'{i} |     |     |     |     |     |     |     |     |\n'
-                    '  |     |     |     |     |     |     |     |     |\n'
-                    " --------------------------------------------------\n"
-                )
             
             self.assertEqual(captured_output.getvalue(), expected_output)
 
@@ -39,7 +53,8 @@ class TestBoard(unittest.TestCase):
         board.__pieces__ = (piece_1, piece_2)
         board.set_piece_cell_begining()
         self.assertEqual(piece_1, board.__grid__[0][0].__piece__)
-        self.assertEqual(piece_2, board.__grid__[3][4].__piece__)
+        self.assertEqual(piece_2, board.__grid__[3][4].__piece__)        
+
 
 if __name__ == '__main__':
     unittest.main()

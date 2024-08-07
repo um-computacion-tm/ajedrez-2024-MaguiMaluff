@@ -19,19 +19,28 @@ class Board():
                                 Pieces(piece="Pawn" ,  color="w", initial_position=(1, 5)),  Pieces(piece="Pawn" ,   color="b", initial_position=(6, 5)),
                                 Pieces(piece="Pawn" ,  color="w", initial_position=(1, 6)),  Pieces(piece="Pawn" ,   color="b", initial_position=(6, 6)),
                                 Pieces(piece="Pawn" ,  color="w", initial_position=(1, 7)),  Pieces(piece="Pawn" ,   color="b", initial_position=(6, 7)),]
-            ### 
+            ### Lista de istas de 8x8
             self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])
+            self.set_piece_cell_begining()
     
 
-    ### Impresion simple del board, falataria que imprima las piezas
+    ### Impresion del board y con las piezas en posicion actual
     def print_board(self):
-        print(" --------------------------------------------------")
-        print('  |{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
-        print(" --------------------------------------------------")
+        print(" --------------------------------------------------------")
+        print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
+        print(" --------------------------------------------------------")
         for i in range(8):
-            print(int(i),'|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("", "" , "", "" , "" , "" , "" ,"" ))
-            print('  |{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("", "" , "", "" , "" , "" , "" ,"" ))
-            print(" --------------------------------------------------")
+            row = []
+            row.append(i)
+            for x in range(8):
+                if self.__grid__[i][x].__state__ == False:
+                    row.append(str(self.__grid__[i][x].__piece__.__image__))
+                else:
+                    row += ' '
+            print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format(*row))
+            print(" --------------------------------------------------------")
+
+                
 
     ### Order by pieces, check the piece position, asign the 
     ### piece to the cell that belongs to the position on the grid

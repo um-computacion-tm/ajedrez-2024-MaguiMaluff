@@ -7,5 +7,5 @@ class TestPieces(unittest.TestCase):
             queen_2 = Pieces("Queen", "b", (0,0))
             queen_1.set_images()
             queen_2.set_images()
-            self.assertEqual(queen_1.__image__, '♛')
-            self.assertEqual(queen_2.__image__, '♕')
+            self.assertEqual(queen_1.__image__, 'q')
+            self.assertEqual(queen_2.__image__, 'Q')
