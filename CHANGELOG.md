@@ -33,4 +33,10 @@
 
 - File exception
 
+# 11/08/2024
+
+# ADDED
+
+- Pawn class
+
 

@@ -119,6 +119,27 @@ class Bishop(Pieces):
             print(e)
             raise
 
+class Pawn(Pieces):
+    def limit(self, new_position):
+        row = self.__position__[0]
+        column = self.__position__[1]
+        list = [[row + 1, column + 1],
+                [row + 1, column],
+                [row + 1, column - 1],
+                ]
+        
+        if new_position not in list:
+            raise LimitedMove()
+
+    def movement(self, new_position):
+        try:
+            self.on_board(new_position)
+            self.valid_or_invalid(new_position)
+            self.limit(new_position)
+        except Exception as e:
+            print(e)
+            raise
+
         
 
     
