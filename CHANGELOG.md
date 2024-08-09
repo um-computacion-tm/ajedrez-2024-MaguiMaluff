@@ -27,7 +27,7 @@
 
 - Added straight_line and diagonal. Checks if the movement for a piece is valid
 
-- Class Queen and King now verify the movement intended to make
+- Class Queen, King, Bishop and Rook now verify the movement intended to make
 
 # CREATED
 
