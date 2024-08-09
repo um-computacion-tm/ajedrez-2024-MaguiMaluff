@@ -1,4 +1,4 @@
-from game.pieces import Pieces, Queen, King
+from game.pieces import Pieces, Queen, King, Bishop, Rook
 from game.board import Board
 from game.exceptions import OutOfBoard, InvalidMove, LimitedMove
 import unittest
@@ -129,6 +129,38 @@ class TestKing(unittest.TestCase):
     def test_6(self):
         king = King('King', 'b', [0,3])
         king.movement([0,4])
+
+class TestBishop(unittest.TestCase):
+    def test_1(self):
+        bishop = Bishop('Bishop', 'b', [0,0])
+        with self.assertRaises(OutOfBoard):
+            bishop.movement([0,1212])
+    
+    def test_2(self):
+        bishop = Bishop('Bishop', 'b', [0,0])
+        bishop.movement([1,1])
+    
+    def test_3(self):
+        bishop = Bishop('Bishop', 'b', [0,0])
+        result = bishop.diagonal([0,4])
+        self.assertEqual(result, False)
+
+class TestRook(unittest.TestCase):
+    def test_1(self):
+        rook = Rook('Rook', 'b', [0,0])
+        with self.assertRaises(OutOfBoard):
+            rook.movement([0,1212])
+    
+    def test_2(self):
+        rook = Rook('rRook', 'b', [0,0])
+        rook.movement([1,1])
+    
+    def test_3(self):
+        rook = Rook('Rook', 'b', [0,0])
+        result = rook.diagonal([0,4])
+        self.assertEqual(result, False)
+
+
 
         
 

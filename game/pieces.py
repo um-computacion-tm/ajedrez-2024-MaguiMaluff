@@ -100,6 +100,25 @@ class King(Pieces):
         except Exception as e:
             print(e)
             raise
+
+class Rook(Pieces):
+    def movement(self, new_position):
+        try:
+            self.on_board(new_position)
+            self.straight_line(new_position)
+        except Exception as e:
+            print(e)
+            raise
+
+class Bishop(Pieces):
+    def movement(self, new_position):
+        try:
+            self.on_board(new_position)
+            self.diagonal(new_position)
+        except Exception as e:
+            print(e)
+            raise
+
         
 
     
