@@ -21,3 +21,8 @@
 
 - Function print_board from class Board. Now it prints the pieces in their actual place.
 
+# 09/08/2024
+
+- Added straight_line and diagonal. Checks if the movement for a piece is valid
+
+
