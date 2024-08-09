@@ -23,6 +23,8 @@
 
 # 09/08/2024
 
+# ADDED
+
 - Added straight_line and diagonal. Checks if the movement for a piece is valid
 
 
