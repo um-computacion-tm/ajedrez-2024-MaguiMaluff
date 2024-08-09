@@ -1,10 +1,10 @@
-from game.pieces import Pieces
+from game.pieces import Pieces, Queen, King
 from game.cell import Cell
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
-            self.__pieces__ = [ Pieces(piece="Queen",  color="w", initial_position=[0, 3]),  Pieces(piece="Queen",   color="b", initial_position=[7, 3]),
-                                Pieces(piece="King",   color="w", initial_position=[0, 4]),  Pieces(piece="King",    color="b", initial_position=[7, 4]),
+            self.__pieces__ = [ Queen(piece="Queen",  color="w", initial_position=[0, 3]),   Queen(piece="Queen",   color="b", initial_position=[7, 3]),
+                                King(piece="King",   color="w", initial_position=[0, 4]),    King(piece="King",    color="b", initial_position=[7, 4]),
                                 Pieces(piece="Rook" ,  color="w", initial_position=[0, 0]),  Pieces(piece="Rook",    color="b", initial_position=[7, 0]),
                                 Pieces(piece="Rook" ,  color="w", initial_position=[0, 7]),  Pieces(piece="Rook",    color="b", initial_position=[7, 7]),
                                 Pieces(piece="Bishop", color="w", initial_position=[0, 2]),  Pieces(piece="Bishop",  color="b", initial_position=[7, 2]),

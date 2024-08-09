@@ -1,5 +1,6 @@
-from game.pieces import Pieces
+from game.pieces import Pieces, Queen, King
 from game.board import Board
+from game.exceptions import OutOfBoard, InvalidMove, LimitedMove
 import unittest
 from unittest.mock import patch
 import builtins
@@ -76,5 +77,59 @@ class TestPieces(unittest.TestCase):
             board.set_piece_cell_begining()
             result = bishop.diagonal([0, 4])
             self.assertEqual(result, False)
+        
+        def test_valid_or_invalid(self):
+            queen = Queen('Queen', 'w', [0,0])
+            with self.assertRaises(InvalidMove):
+                queen.valid_or_invalid([3,1])
+
+        
+class TestQueen(unittest.TestCase):
+    def test_1(self):
+        queen = Queen('Queen', 'w', [0,0])
+        with self.assertRaises(OutOfBoard):
+            queen.movement([0,8])
+    
+    def test_2(self):
+        queen = Queen('Queen', 'w', [0,0])
+        with self.assertRaises(OutOfBoard):
+            queen.movement([-3,0])
+    
+    def test_3(self):
+        queen = Queen('Queen', 'w', [0,0])
+        queen.movement([0,4])
+
+class TestKing(unittest.TestCase):
+
+    def test_1(self):
+        king = King('King', 'b', [0,0])
+        with self.assertRaises(OutOfBoard):
+            king.movement([0,1212])
+
+    def test_2(self):
+        king = King('King', 'b', [0,0])
+        with self.assertRaises(LimitedMove):
+            king.movement([0,0])
+
+    def test_3(self):
+        king = King('King', 'b', [0,0])
+        with self.assertRaises(LimitedMove):
+            king.movement([4,0])
+    
+    def test_4(self):
+        king = King('King', 'b', [1,3])
+        with self.assertRaises(LimitedMove):
+            king.movement([1,0])
+    
+    def test_5(self):
+        king = King('King', 'b', [0,3])
+        with self.assertRaises(LimitedMove):
+            king.limit([1,5])
+    
+    def test_6(self):
+        king = King('King', 'b', [0,3])
+        king.movement([0,4])
+
+        
 
              
