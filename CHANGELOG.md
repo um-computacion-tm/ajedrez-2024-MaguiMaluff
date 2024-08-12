@@ -39,4 +39,8 @@
 
 - Pawn class
 
+# 12/08/2024
 
+# ADDED
+
+- Class Knight

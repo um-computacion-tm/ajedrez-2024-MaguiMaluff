@@ -1,4 +1,4 @@
-from game.pieces import Pieces, Queen, King, Bishop, Rook, Pawn
+from game.pieces import Pieces, Queen, King, Bishop, Rook, Pawn, Knight
 from game.board import Board
 from game.exceptions import OutOfBoard, InvalidMove, LimitedMove
 import unittest
@@ -175,6 +175,20 @@ class TestPawn(unittest.TestCase):
         with self.assertRaises(LimitedMove):
             pawn.movement([0,3])
 
+class TestKnight(unittest.TestCase):
+    def test_1(self):
+        knight = Knight('Knight', 'b', [0,0])
+        with self.assertRaises(OutOfBoard):
+            knight.movement([0,-4])
+    
+    def test_2(self):
+        knight = Knight('Knight', 'b', [0,0])
+        knight.movement([2,1])
+    
+    def test_3(self):
+        knight = Knight('Knight', 'b', [0,0])
+        with self.assertRaises(LimitedMove):
+            knight.movement([3,3])
 
 
         
