@@ -33,25 +33,34 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
     def straight_line(self, new_position):
         row = self.__position__[0]
         column = self.__position__[1]
-        squares = []
         if row != new_position[0] and column != new_position[1]:
             return False
         elif row == new_position[0]:
-            if column < new_position[1]:
-                for i in range(new_position[1] - column):
-                    squares.append([row, column + i + 1])
-            elif column > new_position[1]:
-                for i in range(column - new_position[1]):
-                    squares.append([row, column - i - 1])
+            squares = self.straight_row(row, column, new_position)
             return squares
         elif column == new_position[1]:
-            if row < new_position[0]:
-                for x in range(new_position[0] - row):
-                    squares.append([row + x + 1, column])
-            elif row > new_position[0]:
-                for x in range(row - new_position[0]):
-                    squares.append([row - x - 1, column])
+            squares = self.straight_column(row, column, new_position)
             return squares
+    
+    def straight_row(self, row, column, new_position):
+        squares = []
+        if column < new_position[1]:
+            for i in range(new_position[1] - column):
+                squares.append([row, column + i + 1])
+        elif column > new_position[1]:
+            for i in range(column - new_position[1]):
+                squares.append([row, column - i - 1])
+        return squares
+    
+    def straight_column(self, row, column, new_position):
+        squares = []
+        if row < new_position[0]:
+            for x in range(new_position[0] - row):
+                squares.append([row + x + 1, column])
+        elif row > new_position[0]:
+            for x in range(row - new_position[0]):
+                squares.append([row - x - 1, column])
+        return squares
     
     def diagonal(self, new_position):
         ini_position = []
