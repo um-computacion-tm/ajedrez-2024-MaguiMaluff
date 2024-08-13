@@ -31,34 +31,72 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             self.__image__ = images_black[self.__name__]
     
     def straight_line(self, new_position):
-        if self.__position__[0] != new_position[0] and self.__position__[1] != new_position[1]:
+        row = self.__position__[0]
+        column = self.__position__[1]
+        squares = []
+        if row != new_position[0] and column != new_position[1]:
             return False
-
-        elif self.__position__[0] == new_position[0] or self.__position__[1] == new_position[1]:
-            return True
+        elif row == new_position[0]:
+            if column < new_position[1]:
+                for i in range(new_position[1] - column):
+                    squares.append([row, column + i + 1])
+            elif column > new_position[1]:
+                for i in range(column - new_position[1]):
+                    squares.append([row, column - i - 1])
+            return squares
+        elif column == new_position[1]:
+            if row < new_position[0]:
+                for x in range(new_position[0] - row):
+                    squares.append([row + x + 1, column])
+            elif row > new_position[0]:
+                for x in range(row - new_position[0]):
+                    squares.append([row - x - 1, column])
+            return squares
     
     def diagonal(self, new_position):
-        i_position = [self.__position__[0], self.__position__[1]]
-        i = 0
-        range = new_position[0] - i_position[0]
-        if i_position[0] != new_position[0] and i_position[1] != new_position[1]:
-            while i < range:
-                i_position[0] += 1
-                i_position[1] += 1
-                i+=1
-            if i_position == new_position:
-                return True
+        ini_position = []
+        row = self.__position__[0]
+        column = self.__position__[1]
+        if row != new_position[0] and column != new_position[1]:
+            if row < new_position[0]:
+               squares = self.diagonal_menor(row, column, new_position)
+            elif row > new_position[0]:
+                squares = self.diagonal_mayor(row, column, new_position)
+            ini_position = squares[-1]
+            if ini_position == new_position:
+                return squares
             else:
                 return False
         else:
             return False
+    
+    def diagonal_menor(self,row, column, new_position):
+        squares = []
+        for i in range(new_position[0] - row):
+                row += 1
+                column += 1
+                squares.append([row, column])
+        return squares
+    
+    def diagonal_mayor(self,row, column, new_position):
+        squares = []
+        for i in range(row - new_position[0]):
+            row -= 1
+            column -= 1
+            squares.append([row, column])
+        return squares
+
         
     def valid_or_invalid(self, new_position):
-        diagonal = self.diagonal(new_position)
         straight = self.straight_line(new_position)
+        diagonal = self.diagonal(new_position)
         if diagonal == straight:
             raise InvalidMove()
-        
+        elif diagonal != False:
+            return diagonal
+        elif straight != False:
+            return straight
+              
     def on_board(self, new_position):
         x = new_position[0]
         y = new_position[1]
@@ -71,9 +109,9 @@ class Queen(Pieces):
     def movement(self, new_position):
         try:
             self.on_board(new_position)
-            self.valid_or_invalid(new_position)
+            squares = self.valid_or_invalid(new_position)
+            return squares
         except Exception as e:
-            print(e)
             raise
     
 class King(Pieces):
@@ -96,37 +134,41 @@ class King(Pieces):
         try:
             self.on_board(new_position)
             self.limit(new_position)
-            self.valid_or_invalid(new_position)
+            squares = self.valid_or_invalid(new_position)
+            return squares
         except Exception as e:
-            print(e)
             raise
 
 class Rook(Pieces):
     def movement(self, new_position):
         try:
             self.on_board(new_position)
-            self.straight_line(new_position)
+            squares = self.straight_line(new_position)
+            return squares
         except Exception as e:
-            print(e)
             raise
 
 class Bishop(Pieces):
     def movement(self, new_position):
         try:
             self.on_board(new_position)
-            self.diagonal(new_position)
+            squares = self.diagonal(new_position)
+            return squares
         except Exception as e:
-            print(e)
             raise
 
 class Pawn(Pieces):
     def limit(self, new_position):
         row = self.__position__[0]
         column = self.__position__[1]
-        list = [[row + 1, column + 1],
-                [row + 1, column],
-                [row + 1, column - 1],
-                ]
+        if self.__color__ == 'w':
+            list = [[row + 1, column + 1],
+                    [row + 1, column],
+                    [row + 1, column - 1]]
+        elif self.__color__ == 'b':
+            list = [[row - 1, column + 1],
+                    [row - 1, column],
+                    [row - 1, column - 1]]
         
         if new_position not in list:
             raise LimitedMove()
@@ -134,10 +176,10 @@ class Pawn(Pieces):
     def movement(self, new_position):
         try:
             self.on_board(new_position)
-            self.valid_or_invalid(new_position)
+            squares = self.valid_or_invalid(new_position)
             self.limit(new_position)
+            return squares
         except Exception as e:
-            print(e)
             raise
 
 class Knight(Pieces):
@@ -161,7 +203,6 @@ class Knight(Pieces):
             self.on_board(new_position)
             self.limit(new_position)
         except Exception as e:
-            print(e)
             raise
     
 

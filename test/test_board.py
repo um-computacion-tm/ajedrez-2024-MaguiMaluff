@@ -1,8 +1,9 @@
 import unittest
 from io import StringIO
 import sys
-from game.pieces import Pieces
+from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
 from game.board import Board
+from game.exceptions import InvalidMove
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
@@ -12,8 +13,6 @@ class TestBoard(unittest.TestCase):
    
     def test_print_board(self):
             board = Board()
-            for i in board.__pieces__:
-                i.set_images()
             board.set_piece_cell_begining()
             captured_output = StringIO()
             sys.stdout = captured_output
@@ -53,8 +52,33 @@ class TestBoard(unittest.TestCase):
         board.__pieces__ = (piece_1, piece_2)
         board.set_piece_cell_begining()
         self.assertEqual(piece_1, board.__grid__[0][0].__piece__)
-        self.assertEqual(piece_2, board.__grid__[3][4].__piece__)        
+        self.assertEqual(piece_2, board.__grid__[3][4].__piece__) 
 
+    def test_check_squares_1(self):
+        board = Board()      
+        board.set_piece_cell_begining()
+        with self.assertRaises(InvalidMove):
+            board.check_squares([[1,0],[2,0]])
+    
+    def test_check_squares_2(self):
+        board = Board()      
+        board.set_piece_cell_begining()
+        with self.assertRaises(InvalidMove):
+            board.check_squares([[1,0],[2,0]])
+    
+    def test_move_piece_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__pieces__[-1]
+        board.move_piece(piece, [5,7])
+        self.assertEqual(piece.__position__, [5,7])
+    
+    def test_move_piece_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__pieces__[0]
+        with self.assertRaises(InvalidMove):
+            board.move_piece(piece, [0,4])
 
 if __name__ == '__main__':
     unittest.main()

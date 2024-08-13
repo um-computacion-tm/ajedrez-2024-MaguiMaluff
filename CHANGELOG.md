@@ -44,3 +44,17 @@
 # ADDED
 
 - Class Knight
+
+# CREATED
+
+- move_piece and chack_squares in class Board
+
+# CHANGED
+
+- diagonal and straight lines, both return False if the move is invalid or a list of positions if the move is valid
+
+# 13/08/2024
+
+# CHANGED
+
+- Class Pieces, functions diagonal and straight_line
