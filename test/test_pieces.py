@@ -78,25 +78,46 @@ class TestPieces(unittest.TestCase):
 
         
 class TestQueen(unittest.TestCase):
-    def test_queen_1(self):
-        queen = Queen('Queen', 'w', [0,0])
+    def test_queen_out_down(self):
+        queen = Queen('Queen', 'w', [0,3])
         with self.assertRaises(OutOfBoard):
             queen.movement([0,8])
     
-    def test_queen_2(self):
-        queen = Queen('Queen', 'w', [0,0])
+    def test_queen_out_up(self):
+        queen = Queen('Queen', 'w', [0,3])
         with self.assertRaises(OutOfBoard):
             queen.movement([-3,0])
     
-    def test_queen_3(self):
-        queen = Queen('Queen', 'w', [0,0])
-        list = queen.movement([0,4])
-        self.assertEqual(list, [[0,1], [0,2], [0,3], [0,4]])
+    def test_queen_straight_right(self):
+        queen = Queen('Queen', 'w', [0,3])
+        list = queen.movement([0,7])
+        self.assertEqual(list, [[0,4], [0,5], [0,6], [0,7]])
 
-    def test_queen_4(self):
+    def test_queen_straight_up(self):
         queen = Queen('Queen', 'b', [7,3])
         list = queen.movement([0,3])
         self.assertEqual(list, [[6,3], [5,3], [4,3], [3,3], [2,3], [1,3], [0,3]])
+    
+    def test_queen_diagonal_left_b(self):
+        queen = Queen('Queen', 'b', [7,3])
+        list = queen.movement([5,1])
+        self.assertEqual(list, [[6,2], [5,1]])
+
+    
+    def test_queen_diagonal_right_b(self):
+        queen = Queen('Queen', 'b', [7,3])
+        list = queen.movement([5,5])
+        self.assertEqual(list, [[6,4], [5,5]])
+    
+    def test_queen_diagonal_left_w(self):
+        queen = Queen('Queen', 'w', [0,3])
+        list = queen.movement([3,0])
+        self.assertEqual(list, [[1,2], [2,1], [3,0]])
+    
+    def test_queen_diagonal_right_w(self):
+        queen = Queen('Queen', 'w', [0,3])
+        list = queen.movement([4,7])
+        self.assertEqual(list, [[1,4], [2,5], [3,6], [4,7]])
 
 class TestKing(unittest.TestCase):
 
@@ -148,7 +169,6 @@ class TestBishop(unittest.TestCase):
         self.assertEqual(result, False)
     
     def test_bishop_2(self):
-        print("bishop")
         bishop = Bishop('Bishop', 'b', [5,7])
         result = bishop.movement([0,2])
         self.assertEqual(result, [[4, 6], [3, 5], [2, 4], [1, 3], [0, 2]])

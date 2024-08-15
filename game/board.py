@@ -71,31 +71,4 @@ class Board():
             self.__grid__[x][y].__state__ = False
             self.__grid__[x][y].__piece__ = i
 
-    def check_squares(self, squares):
-        for square in squares:
-            x = square[0]
-            y = square[1]
-            cell_state = self.__grid__[x][y].__state__
-            if cell_state == False and [x , y] != squares[-1]:
-                raise InvalidMove
-    
-    def check_color(self, piece, last_square):
-        row = last_square[0]
-        column = last_square[1]
-        last_square = self.__grid__[row][column]
-        if last_square.__state__ == False and piece.__color__ == last_square.__piece__.__color__:
-            raise InvalidMove()
-        
-    ### Llama a la funcion en piece que verifica si la forma de movimiento es valida.
-    ### Llamar a la funcion check_around, para saber si se puede mover a traves
-    def move_piece(self, piece, new_position):
-        try:
-            squares = piece.movement(new_position)
-            self.check_color(piece, squares[-1])
-            self.check_squares(squares)
-            piece.__position__ = new_position
-        except Exception as e:
-            raise
-    
 
-        

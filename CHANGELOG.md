@@ -58,3 +58,25 @@
 # CHANGED
 
 - Class Pieces, functions diagonal and straight_line
+
+# 15/08/2024
+
+# DELETED
+
+- Check_squares_multiple
+
+- Check_squares_one
+
+- Check_color
+
+- move_piece
+
+- eat_piece
+
+- piece_exception
+
+- They will be back, fixing previous functions that are not working well yet
+
+# FIXED
+
+- Functions diagonal, used to check only for movements to right, up or down. Now its fixed, checks for left movements as well
