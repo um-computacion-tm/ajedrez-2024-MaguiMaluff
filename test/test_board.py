@@ -89,16 +89,16 @@ class TestBoard(unittest.TestCase):
         piece = Queen("Queen", 'b', [0,0])
         board.set_piece_cell_begining()
         with self.assertRaises(GoingThroughAPiece):
-            board.check_squares_multiple(piece, [[5,0],[7,0]])
+            board.check_squares_multiple(piece, [[5,0],[7,0], [6,0]])
     
-    def test_check_squares_5(self):
+    def test_check_squares_6(self):
         board = Board()
         piece = Queen("Queen", 'b', [0,0])
         board.set_piece_cell_begining()
         with self.assertRaises(GoingThroughAPiece):
             board.check_squares_multiple(piece, [[6,6],[7,0]])
     
-    def test_check_squares_6(self):
+    def test_check_squares_7(self):
         board = Board()
         piece = Queen("Queen", 'b', [0,0])
         board.set_piece_cell_begining()
@@ -142,8 +142,6 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'P')
         board.eat_piece(piece, [6,6])
         self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'q')
-
-
     
     def test_eating_2(self):
         board = Board()
@@ -153,6 +151,55 @@ class TestBoard(unittest.TestCase):
         board.eat_piece(piece, [1,1])
         self.assertEqual(board.__grid__[1][1].__piece__, piece)
 
+    ### Test Move
+
+    def test_move_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][4]
+        board.move(piece, [5, 5])
+        self.assertEqual(board.__grid__[5][5].__piece__, piece)
+        self.assertEqual(piece.__position__, [5,5])
+
+
+    ### Test Move Piece
+
+    def test_move_piece_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__pieces__[-1]
+        board.move_piece(piece, [5,7])
+        self.assertEqual(piece.__position__, [5,7])
+    
+    def test_move_piece_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__pieces__[0]
+        with self.assertRaises(SameColor):
+            board.move_piece(piece, [0,4])
+    
+    def test_move_piece_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][0].__piece__
+        with self.assertRaises(GoingThroughAPiece):
+            board.move_piece(piece, [0,4])
+    
+    def test_move_piece_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][0].__piece__
+        board.__grid__[1][0].__state__ = True        
+        board.move_piece(piece, [4,0])
+        self.assertEqual(piece.__position__, [4,0])
+
+    def test_move_piece_5(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][3].__piece__
+        board.__grid__[1][3].__state__ = True        
+        board.move_piece(piece, [6,3])
+        self.assertEqual(piece.__position__, [6,3])
 
 if __name__ == '__main__':
     unittest.main()

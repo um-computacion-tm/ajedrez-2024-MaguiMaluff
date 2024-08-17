@@ -88,3 +88,9 @@
 - check_squares_multiple/one and eat_piece, now they work
 
 - Tests for mentioned functions
+
+# 17/08/2024
+
+# ADDED
+
+- move_piece, and move, with tests

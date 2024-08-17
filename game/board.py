@@ -86,6 +86,8 @@ class Board():
                     return eat
                 except Exception as e:
                     raise
+            elif cell_state == True and [x , y] == squares[-1]:
+                return 'move'
     
     ### If the piece only moves one square, this function
     ### checks if the new cell is occupied, and if it is,
@@ -96,13 +98,34 @@ class Board():
             cell = self.__grid__[x][y]
             if cell.__state__ == False and cell.__piece__.__color__ == piece.__color__:
                 raise SameColor()
+            elif cell.__state__ == True:
+                return 'move'
             else: 
                 return "eat"
-            
 
     def eat_piece(self, piece, new_position):
         row = new_position[0]
         column = new_position[1]
-        self.__grid__[row][column].__piece__.__image__ = ''
         self.__grid__[row][column].__piece__ = piece
-        
+        piece.__position__ = new_position
+    
+    def move(self, piece, new_position):
+        row = new_position[0]
+        column = new_position[1]
+        self.__grid__[row][column].__piece__ = piece
+        piece.__position__ = new_position
+
+    def move_piece(self, piece, new_position):
+        try:
+            squares = piece.movement(new_position)
+            if len(squares) > 1:
+                eat = self.check_squares_multiple(piece, squares)
+            else:
+                eat = self.check_squares_one(piece, new_position)
+            if eat == 'eat':
+                self.eat_piece(piece, new_position)
+            elif eat == 'move':
+                self.move(piece, new_position)
+        except Exception as e:
+            raise
+    

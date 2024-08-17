@@ -236,6 +236,7 @@ class Knight(Pieces):
         try:
             self.on_board(new_position)
             self.limit(new_position)
+            return(new_position)
         except Exception as e:
             raise
     
