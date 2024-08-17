@@ -80,3 +80,11 @@
 # FIXED
 
 - Functions diagonal, used to check only for movements to right, up or down. Now its fixed, checks for left movements as well
+
+# 16/08/2024
+
+# ADDED 
+
+- check_squares_multiple/one and eat_piece, now they work
+
+- Tests for mentioned functions

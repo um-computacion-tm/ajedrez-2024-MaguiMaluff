@@ -3,7 +3,7 @@ from io import StringIO
 import sys
 from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
 from game.board import Board
-from game.exceptions import InvalidMove
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
@@ -53,6 +53,106 @@ class TestBoard(unittest.TestCase):
         board.set_piece_cell_begining()
         self.assertEqual(piece_1, board.__grid__[0][0].__piece__)
         self.assertEqual(piece_2, board.__grid__[3][4].__piece__) 
+
+
+    ### Test Check Squares Multiple
+
+    def test_check_squares_1(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])      
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[1,0],[2,0]])
+    
+    def test_check_squares_2(self):
+        board = Board() 
+        piece = Queen("Queen", 'b', [0,0])     
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[1,2],[7,0]])
+    
+    def test_check_squares_3(self):
+        board = Board()
+        piece = Queen("Queen", 'w', [0,0])
+        board.set_piece_cell_begining()
+        eat = board.check_squares_multiple(piece, [[2,0],[2,1],[2,3],[6,6]])
+        self.assertEqual(eat, "eat")
+
+    def test_check_squares_4(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        board.check_squares_multiple(piece, [[3,0], [3,1],[3,3], [3,4]])
+    
+    def test_check_squares_5(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[5,0],[7,0]])
+    
+    def test_check_squares_5(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[6,6],[7,0]])
+    
+    def test_check_squares_6(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(SameColor):
+            board.check_squares_multiple(piece, [[2,0],[2,1],[2,3],[6,6]])
+
+    
+    ### Test Check Squares One
+
+    def test_check_one_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        with self.assertRaises(SameColor):
+            board.check_squares_one(board.__grid__[0][0].__piece__, [1,0])
+
+    def test_check_one_2(self):
+            board = Board()
+            board.set_piece_cell_begining()
+            with self.assertRaises(SameColor):
+                board.check_squares_one(board.__grid__[7][7].__piece__, [7,6])
+    
+    def test_check_one_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        eat = board.check_squares_one(board.__grid__[0][0].__piece__, [6,6])
+        self.assertEqual(eat, "eat")
+
+    def test_check_one_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        eat = board.check_squares_one(board.__grid__[7][3].__piece__, [1,6])
+        self.assertEqual(eat, "eat")
+
+    ### Test Eat Piece
+
+    def test_eating_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = Queen("Queen", 'w', [0,0])
+        piece.set_images()
+        self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'P')
+        board.eat_piece(piece, [6,6])
+        self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'q')
+
+
+    
+    def test_eating_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = Queen("Queen", 'b', [0,0])
+        self.assertEqual(board.__grid__[1][1].__piece__.__image__, 'p')
+        board.eat_piece(piece, [1,1])
+        self.assertEqual(board.__grid__[1][1].__piece__, piece)
+
 
 if __name__ == '__main__':
     unittest.main()

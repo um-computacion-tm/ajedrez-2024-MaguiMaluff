@@ -1,6 +1,6 @@
 from game.pieces import Pieces, Queen, King, Rook, Bishop, Knight, Pawn
 from game.cell import Cell
-from game.exceptions import InvalidMove
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
@@ -21,9 +21,7 @@ class Board():
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 6]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 6]),
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 7]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 7]),]
             ### Lista de listas de 8x8
-            self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])
-            self.set_piece_cell_begining()
-    
+            self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
     ### Impresion del board, con las piezas en posicion actual
     def print_board(self):
@@ -71,4 +69,40 @@ class Board():
             self.__grid__[x][y].__state__ = False
             self.__grid__[x][y].__piece__ = i
 
+    ### If the movement is valid, this function checks each
+    ### square the piece intents to go through for pieces.
+    ### A cell could be occupied only if the piece there 
+    ### is a different color and the cell is the last position
+    def check_squares_multiple(self, piece, squares):
+        for square in squares:
+            x = square[0]
+            y = square[1]
+            cell_state = self.__grid__[x][y].__state__
+            if cell_state == False and [x , y] != squares[-1]:
+                raise GoingThroughAPiece()
+            elif cell_state == False and [x , y] == squares[-1]:
+                try:
+                    eat = self.check_squares_one(piece, squares[-1])
+                    return eat
+                except Exception as e:
+                    raise
+    
+    ### If the piece only moves one square, this function
+    ### checks if the new cell is occupied, and if it is,
+    ### it checks the color.
+    def check_squares_one(self, piece, squares):
+            x = squares[0]
+            y = squares[1]
+            cell = self.__grid__[x][y]
+            if cell.__state__ == False and cell.__piece__.__color__ == piece.__color__:
+                raise SameColor()
+            else: 
+                return "eat"
+            
 
+    def eat_piece(self, piece, new_position):
+        row = new_position[0]
+        column = new_position[1]
+        self.__grid__[row][column].__piece__.__image__ = ''
+        self.__grid__[row][column].__piece__ = piece
+        
