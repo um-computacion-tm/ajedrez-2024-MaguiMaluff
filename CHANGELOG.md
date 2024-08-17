@@ -94,3 +94,7 @@
 # ADDED
 
 - move_piece, and move, with tests
+
+# DELETED
+
+- move, was the same as eat_piece

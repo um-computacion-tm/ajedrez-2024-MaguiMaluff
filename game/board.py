@@ -108,12 +108,6 @@ class Board():
         column = new_position[1]
         self.__grid__[row][column].__piece__ = piece
         piece.__position__ = new_position
-    
-    def move(self, piece, new_position):
-        row = new_position[0]
-        column = new_position[1]
-        self.__grid__[row][column].__piece__ = piece
-        piece.__position__ = new_position
 
     def move_piece(self, piece, new_position):
         try:
@@ -125,7 +119,7 @@ class Board():
             if eat == 'eat':
                 self.eat_piece(piece, new_position)
             elif eat == 'move':
-                self.move(piece, new_position)
+                self.eat_piece(piece, new_position)
         except Exception as e:
             raise
     
