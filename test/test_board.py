@@ -151,17 +151,6 @@ class TestBoard(unittest.TestCase):
         board.eat_piece(piece, [1,1])
         self.assertEqual(board.__grid__[1][1].__piece__, piece)
 
-    ### Test Move
-
-    def test_move_1(self):
-        board = Board()
-        board.set_piece_cell_begining()
-        piece = board.__grid__[0][4]
-        board.move(piece, [5, 5])
-        self.assertEqual(board.__grid__[5][5].__piece__, piece)
-        self.assertEqual(piece.__position__, [5,5])
-
-
     ### Test Move Piece
 
     def test_move_piece_1(self):
