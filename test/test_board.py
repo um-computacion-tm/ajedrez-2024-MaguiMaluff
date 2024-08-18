@@ -3,7 +3,7 @@ from io import StringIO
 import sys
 from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
 from game.board import Board
-from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, LimitedMove
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
@@ -189,6 +189,22 @@ class TestBoard(unittest.TestCase):
         board.__grid__[1][3].__state__ = True        
         board.move_piece(piece, [6,3])
         self.assertEqual(piece.__position__, [6,3])
+
+    ### Test Knight
+
+    def test_knight_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        knight = board.__grid__[7][1].__piece__
+        board.move_piece(knight, [5,2])
+        self.assertEqual(knight.__position__, [5,2])
+    
+    def test_knight_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        knight = board.__grid__[7][1].__piece__
+        with self.assertRaises(LimitedMove):
+            board.move_piece(knight, [5,1])
 
 if __name__ == '__main__':
     unittest.main()

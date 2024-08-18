@@ -110,16 +110,24 @@ class Board():
         piece.__position__ = new_position
 
     def move_piece(self, piece, new_position):
+        eat = None
         try:
-            squares = piece.movement(new_position)
-            if len(squares) > 1:
-                eat = self.check_squares_multiple(piece, squares)
+            if piece.__name__ == "Knight":
+                eat = self.knight(piece, new_position)
             else:
-                eat = self.check_squares_one(piece, new_position)
-            if eat == 'eat':
-                self.eat_piece(piece, new_position)
-            elif eat == 'move':
+                squares = piece.movement(new_position)
+                if len(squares) > 1:
+                    eat = self.check_squares_multiple(piece, squares)
+                else:
+                    eat = self.check_squares_one(piece, new_position)
+            if eat == 'eat' or eat == 'move':
                 self.eat_piece(piece, new_position)
         except Exception as e:
             raise
+    
+    def knight(self, piece, new_position):
+        squares = piece.movement(new_position)
+        eat = self.check_squares_one(piece, squares)
+        return eat
+
     

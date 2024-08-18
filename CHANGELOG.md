@@ -98,3 +98,9 @@
 # DELETED
 
 - move, was the same as eat_piece
+
+# 18/08/2024
+
+# ADDED
+
+- In class Board, added knight, checks especificaly for knight movement
