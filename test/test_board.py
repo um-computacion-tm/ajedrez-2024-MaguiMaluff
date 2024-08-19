@@ -206,5 +206,65 @@ class TestBoard(unittest.TestCase):
         with self.assertRaises(LimitedMove):
             board.move_piece(knight, [5,1])
 
+    ### Test Pawn
+
+    def test_pawn_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][7].__piece__
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [5,6])
+    
+    def test_pawn_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[1][1].__piece__
+        cell = board.__grid__[2][2]
+        piece = Pawn('Pawn', 'b' ,[2,2])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        eat = board.pawn(pawn, [2,2])
+        self.assertEqual(eat, 'eat')
+    
+    def test_pawn_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[1][1].__piece__
+        cell = board.__grid__[2][1]
+        piece = Pawn('Pawn', 'b' ,[2,1])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [2,1])
+
+    def test_pawn_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][7].__piece__
+        with self.assertRaises(InvalidMove):
+            board.move_piece(pawn, [5,6])
+    
+    def test_pawn_5(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][6].__piece__
+        cell = board.__grid__[5][5]
+        piece = Pawn('Pawn', 'w' ,[5,5])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        eat = board.pawn(pawn, [5,5])
+        self.assertEqual(eat, 'eat')
+    
+    def test_pawn_6(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][1].__piece__
+        cell = board.__grid__[5][1]
+        piece = Pawn('Pawn', 'w' ,[5,1])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [5,1])
+
 if __name__ == '__main__':
     unittest.main()

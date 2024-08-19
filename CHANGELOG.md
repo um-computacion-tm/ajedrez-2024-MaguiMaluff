@@ -104,3 +104,11 @@
 # ADDED
 
 - In class Board, added knight, checks especificaly for knight movement
+
+# 19/08/2024
+
+# ADDED
+
+- Function pawn in class Board, checks for the pawns movement
+
+- Tests for pawn in board

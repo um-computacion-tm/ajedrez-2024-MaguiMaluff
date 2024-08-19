@@ -114,6 +114,8 @@ class Board():
         try:
             if piece.__name__ == "Knight":
                 eat = self.knight(piece, new_position)
+            elif piece.__name__ == "Pawn":
+                eat = self.pawn(piece, new_position)
             else:
                 squares = piece.movement(new_position)
                 if len(squares) > 1:
@@ -128,6 +130,25 @@ class Board():
     def knight(self, piece, new_position):
         squares = piece.movement(new_position)
         eat = self.check_squares_one(piece, squares)
+        return eat
+    
+    def pawn(self, piece, new_position):
+        row = piece.__position__[0]
+        column = piece.__position__[1]
+        # This positions are diagonal, pawn should be
+        # eating in order to move there
+        eating = [[row + 1, column + 1],
+                  [row + 1, column - 1], 
+                  [row - 1, column + 1],
+                  [row - 1, column - 1]]
+        if new_position in eating:
+            eat = self.check_squares_one(piece, new_position)
+            if eat != 'eat':
+                raise InvalidMove
+        else:
+            eat = self.check_squares_one(piece, new_position)
+            if eat == 'eat':
+                raise InvalidMove()
         return eat
 
     
