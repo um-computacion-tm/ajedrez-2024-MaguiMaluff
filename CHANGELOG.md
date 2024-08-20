@@ -58,3 +58,57 @@
 # CHANGED
 
 - Class Pieces, functions diagonal and straight_line
+
+# 15/08/2024
+
+# DELETED
+
+- Check_squares_multiple
+- Check_squares_one
+- Check_color
+- move_piece
+- eat_piece
+- piece_exception
+- They will be back, fixing previous functions that are not working well yet
+
+# FIXED
+
+- Functions diagonal, used to check only for movements to right, up or down. Now its fixed, checks for left movements as well
+
+# 16/08/2024
+
+# ADDED 
+
+- check_squares_multiple/one and eat_piece, now they work
+- Tests for mentioned functions
+
+# 17/08/2024
+
+# ADDED
+
+- move_piece, and move, with tests
+
+# DELETED
+
+- move, was the same as eat_piece
+
+# 18/08/2024
+
+# ADDED
+
+- In class Board, added knight, checks especificaly for knight movement
+
+# 19/08/2024
+
+# ADDED
+
+- Function pawn in class Board, checks for the pawns movement
+- Tests for pawn in board
+
+# 20/08/2024
+
+# CREATED
+
+- Class Players and Tests
+
+- Class Chess and Tests

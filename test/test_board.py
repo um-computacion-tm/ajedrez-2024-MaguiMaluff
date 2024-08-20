@@ -3,7 +3,7 @@ from io import StringIO
 import sys
 from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
 from game.board import Board
-from game.exceptions import InvalidMove
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, LimitedMove
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
@@ -54,18 +54,105 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(piece_1, board.__grid__[0][0].__piece__)
         self.assertEqual(piece_2, board.__grid__[3][4].__piece__) 
 
+
+    ### Test Check Squares Multiple
+
     def test_check_squares_1(self):
-        board = Board()      
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])      
         board.set_piece_cell_begining()
-        with self.assertRaises(InvalidMove):
-            board.check_squares([[1,0],[2,0]])
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[1,0],[2,0]])
     
     def test_check_squares_2(self):
-        board = Board()      
+        board = Board() 
+        piece = Queen("Queen", 'b', [0,0])     
         board.set_piece_cell_begining()
-        with self.assertRaises(InvalidMove):
-            board.check_squares([[1,0],[2,0]])
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[1,2],[7,0]])
     
+    def test_check_squares_3(self):
+        board = Board()
+        piece = Queen("Queen", 'w', [0,0])
+        board.set_piece_cell_begining()
+        eat = board.check_squares_multiple(piece, [[2,0],[2,1],[2,3],[6,6]])
+        self.assertEqual(eat, "eat")
+
+    def test_check_squares_4(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        board.check_squares_multiple(piece, [[3,0], [3,1],[3,3], [3,4]])
+    
+    def test_check_squares_5(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[5,0],[7,0], [6,0]])
+    
+    def test_check_squares_6(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(GoingThroughAPiece):
+            board.check_squares_multiple(piece, [[6,6],[7,0]])
+    
+    def test_check_squares_7(self):
+        board = Board()
+        piece = Queen("Queen", 'b', [0,0])
+        board.set_piece_cell_begining()
+        with self.assertRaises(SameColor):
+            board.check_squares_multiple(piece, [[2,0],[2,1],[2,3],[6,6]])
+
+    
+    ### Test Check Squares One
+
+    def test_check_one_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        with self.assertRaises(SameColor):
+            board.check_squares_one(board.__grid__[0][0].__piece__, [1,0])
+
+    def test_check_one_2(self):
+            board = Board()
+            board.set_piece_cell_begining()
+            with self.assertRaises(SameColor):
+                board.check_squares_one(board.__grid__[7][7].__piece__, [7,6])
+    
+    def test_check_one_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        eat = board.check_squares_one(board.__grid__[0][0].__piece__, [6,6])
+        self.assertEqual(eat, "eat")
+
+    def test_check_one_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        eat = board.check_squares_one(board.__grid__[7][3].__piece__, [1,6])
+        self.assertEqual(eat, "eat")
+
+    ### Test Eat Piece
+
+    def test_eating_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = Queen("Queen", 'w', [0,0])
+        piece.set_images()
+        self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'P')
+        board.eat_piece(piece, [6,6])
+        self.assertEqual(board.__grid__[6][6].__piece__.__image__, 'q')
+    
+    def test_eating_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = Queen("Queen", 'b', [0,0])
+        self.assertEqual(board.__grid__[1][1].__piece__.__image__, 'p')
+        board.eat_piece(piece, [1,1])
+        self.assertEqual(board.__grid__[1][1].__piece__, piece)
+
+    ### Test Move Piece
+
     def test_move_piece_1(self):
         board = Board()
         board.set_piece_cell_begining()
@@ -77,8 +164,107 @@ class TestBoard(unittest.TestCase):
         board = Board()
         board.set_piece_cell_begining()
         piece = board.__pieces__[0]
-        with self.assertRaises(InvalidMove):
+        with self.assertRaises(SameColor):
             board.move_piece(piece, [0,4])
+    
+    def test_move_piece_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][0].__piece__
+        with self.assertRaises(GoingThroughAPiece):
+            board.move_piece(piece, [0,4])
+    
+    def test_move_piece_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][0].__piece__
+        board.__grid__[1][0].__state__ = True        
+        board.move_piece(piece, [4,0])
+        self.assertEqual(piece.__position__, [4,0])
+
+    def test_move_piece_5(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        piece = board.__grid__[0][3].__piece__
+        board.__grid__[1][3].__state__ = True        
+        board.move_piece(piece, [6,3])
+        self.assertEqual(piece.__position__, [6,3])
+
+    ### Test Knight
+
+    def test_knight_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        knight = board.__grid__[7][1].__piece__
+        board.move_piece(knight, [5,2])
+        self.assertEqual(knight.__position__, [5,2])
+    
+    def test_knight_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        knight = board.__grid__[7][1].__piece__
+        with self.assertRaises(LimitedMove):
+            board.move_piece(knight, [5,1])
+
+    ### Test Pawn
+
+    def test_pawn_1(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][7].__piece__
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [5,6])
+    
+    def test_pawn_2(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[1][1].__piece__
+        cell = board.__grid__[2][2]
+        piece = Pawn('Pawn', 'b' ,[2,2])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        eat = board.pawn(pawn, [2,2])
+        self.assertEqual(eat, 'eat')
+    
+    def test_pawn_3(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[1][1].__piece__
+        cell = board.__grid__[2][1]
+        piece = Pawn('Pawn', 'b' ,[2,1])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [2,1])
+
+    def test_pawn_4(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][7].__piece__
+        with self.assertRaises(InvalidMove):
+            board.move_piece(pawn, [5,6])
+    
+    def test_pawn_5(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][6].__piece__
+        cell = board.__grid__[5][5]
+        piece = Pawn('Pawn', 'w' ,[5,5])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        eat = board.pawn(pawn, [5,5])
+        self.assertEqual(eat, 'eat')
+    
+    def test_pawn_6(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][1].__piece__
+        cell = board.__grid__[5][1]
+        piece = Pawn('Pawn', 'w' ,[5,1])
+        cell.__piece__ = piece
+        cell.__state__ = False
+        with self.assertRaises(InvalidMove):
+            board.pawn(pawn, [5,1])
 
 if __name__ == '__main__':
     unittest.main()

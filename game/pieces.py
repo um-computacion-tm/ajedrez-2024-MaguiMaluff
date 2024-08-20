@@ -67,19 +67,28 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         row = self.__position__[0]
         column = self.__position__[1]
         if row != new_position[0] and column != new_position[1]:
-            if row < new_position[0]:
-               squares = self.diagonal_menor(row, column, new_position)
-            elif row > new_position[0]:
-                squares = self.diagonal_mayor(row, column, new_position)
-            ini_position = squares[-1]
-            if ini_position == new_position:
+            type_move = self.check_type_diagonal(row, column, new_position)
+            move_function = getattr(self, type_move)
+            squares = move_function(row, column, new_position)
+            if squares[-1] == new_position:
                 return squares
             else:
                 return False
         else:
             return False
     
-    def diagonal_menor(self,row, column, new_position):
+    def check_type_diagonal(self, row, column, new_position):
+        if row > new_position[0] and column > new_position[1]:
+            return "left_up"
+        elif row > new_position[0] and column < new_position[1]:
+            return "right_up"
+        elif row < new_position[0] and column > new_position[1]:
+            return "left_down"
+        elif row < new_position[0] and column < new_position[1]:
+            return "right_down"
+
+
+    def right_down(self,row, column, new_position):
         squares = []
         for i in range(new_position[0] - row):
                 row += 1
@@ -87,7 +96,23 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
                 squares.append([row, column])
         return squares
     
-    def diagonal_mayor(self,row, column, new_position):
+    def right_up(self,row, column, new_position):
+        squares = []
+        for i in range(new_position[1] - column):
+                row -= 1
+                column += 1
+                squares.append([row, column])
+        return squares
+    
+    def left_down(self, row, column, new_position):
+        squares = []
+        for i in range(new_position[0] - row):
+            row += 1
+            column -= 1
+            squares.append([row, column])
+        return squares
+    
+    def left_up(self,row, column, new_position):
         squares = []
         for i in range(row - new_position[0]):
             row -= 1
@@ -211,6 +236,7 @@ class Knight(Pieces):
         try:
             self.on_board(new_position)
             self.limit(new_position)
+            return(new_position)
         except Exception as e:
             raise
     

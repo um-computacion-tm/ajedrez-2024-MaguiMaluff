@@ -1,6 +1,6 @@
 from game.pieces import Pieces, Queen, King, Rook, Bishop, Knight, Pawn
 from game.cell import Cell
-from game.exceptions import InvalidMove
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
@@ -21,9 +21,7 @@ class Board():
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 6]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 6]),
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 7]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 7]),]
             ### Lista de listas de 8x8
-            self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])
-            self.set_piece_cell_begining()
-    
+            self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
     ### Impresion del board, con las piezas en posicion actual
     def print_board(self):
@@ -71,31 +69,86 @@ class Board():
             self.__grid__[x][y].__state__ = False
             self.__grid__[x][y].__piece__ = i
 
-    def check_squares(self, squares):
+    ### If the movement is valid, this function checks each
+    ### square the piece intents to go through for pieces.
+    ### A cell could be occupied only if the piece there 
+    ### is a different color and the cell is the last position
+    def check_squares_multiple(self, piece, squares):
         for square in squares:
             x = square[0]
             y = square[1]
             cell_state = self.__grid__[x][y].__state__
             if cell_state == False and [x , y] != squares[-1]:
-                raise InvalidMove
+                raise GoingThroughAPiece()
+            elif cell_state == False and [x , y] == squares[-1]:
+                try:
+                    eat = self.check_squares_one(piece, squares[-1])
+                    return eat
+                except Exception as e:
+                    raise
+            elif cell_state == True and [x , y] == squares[-1]:
+                return 'move'
     
-    def check_color(self, piece, last_square):
-        row = last_square[0]
-        column = last_square[1]
-        last_square = self.__grid__[row][column]
-        if last_square.__state__ == False and piece.__color__ == last_square.__piece__.__color__:
-            raise InvalidMove()
-        
-    ### Llama a la funcion en piece que verifica si la forma de movimiento es valida.
-    ### Llamar a la funcion check_around, para saber si se puede mover a traves
+    ### If the piece only moves one square, this function
+    ### checks if the new cell is occupied, and if it is,
+    ### it checks the color.
+    def check_squares_one(self, piece, squares):
+            x = squares[0]
+            y = squares[1]
+            cell = self.__grid__[x][y]
+            if cell.__state__ == False and cell.__piece__.__color__ == piece.__color__:
+                raise SameColor()
+            elif cell.__state__ == True:
+                return 'move'
+            else: 
+                return "eat"
+
+    def eat_piece(self, piece, new_position):
+        row = new_position[0]
+        column = new_position[1]
+        self.__grid__[row][column].__piece__ = piece
+        piece.__position__ = new_position
+
     def move_piece(self, piece, new_position):
+        eat = None
         try:
-            squares = piece.movement(new_position)
-            self.check_color(piece, squares[-1])
-            self.check_squares(squares)
-            piece.__position__ = new_position
+            if piece.__name__ == "Knight":
+                eat = self.knight(piece, new_position)
+            elif piece.__name__ == "Pawn":
+                eat = self.pawn(piece, new_position)
+            else:
+                squares = piece.movement(new_position)
+                if len(squares) > 1:
+                    eat = self.check_squares_multiple(piece, squares)
+                else:
+                    eat = self.check_squares_one(piece, new_position)
+            if eat == 'eat' or eat == 'move':
+                self.eat_piece(piece, new_position)
         except Exception as e:
             raise
     
+    def knight(self, piece, new_position):
+        squares = piece.movement(new_position)
+        eat = self.check_squares_one(piece, squares)
+        return eat
+    
+    def pawn(self, piece, new_position):
+        row = piece.__position__[0]
+        column = piece.__position__[1]
+        # This positions are diagonal, pawn should be
+        # eating in order to move there
+        eating = [[row + 1, column + 1],
+                  [row + 1, column - 1], 
+                  [row - 1, column + 1],
+                  [row - 1, column - 1]]
+        if new_position in eating:
+            eat = self.check_squares_one(piece, new_position)
+            if eat != 'eat':
+                raise InvalidMove
+        else:
+            eat = self.check_squares_one(piece, new_position)
+            if eat == 'eat':
+                raise InvalidMove()
+        return eat
 
-        
+    
