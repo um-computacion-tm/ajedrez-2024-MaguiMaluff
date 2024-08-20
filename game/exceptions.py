@@ -12,3 +12,6 @@ class GoingThroughAPiece(Exception):
 
 class SameColor(Exception):
     pass
+
+class WrongPiece(Exception):
+    pass

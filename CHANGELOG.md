@@ -64,17 +64,11 @@
 # DELETED
 
 - Check_squares_multiple
-
 - Check_squares_one
-
 - Check_color
-
 - move_piece
-
 - eat_piece
-
 - piece_exception
-
 - They will be back, fixing previous functions that are not working well yet
 
 # FIXED
@@ -86,7 +80,6 @@
 # ADDED 
 
 - check_squares_multiple/one and eat_piece, now they work
-
 - Tests for mentioned functions
 
 # 17/08/2024
@@ -110,5 +103,12 @@
 # ADDED
 
 - Function pawn in class Board, checks for the pawns movement
-
 - Tests for pawn in board
+
+# 20/08/2024
+
+# CREATED
+
+- Class Players and Tests
+
+- Class Chess and Tests
