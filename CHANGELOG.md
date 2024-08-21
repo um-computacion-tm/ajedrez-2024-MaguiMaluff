@@ -29,7 +29,7 @@
 
 - Class Queen, King, Bishop and Rook now verify the movement intended to make
 
-# CREATED
+# ADDED
 
 - File exception
 
@@ -45,7 +45,7 @@
 
 - Class Knight
 
-# CREATED
+# ADDED
 
 - move_piece and chack_squares in class Board
 
@@ -107,8 +107,29 @@
 
 # 20/08/2024
 
-# CREATED
+# ADDED
 
 - Class Players and Tests
 
 - Class Chess and Tests
+
+# 21/08/2024
+
+# ADDED
+
+- change_cell in Board
+
+- moved in Cell
+
+- cli
+
+- get_column, next_turn and is_playing in Chess
+
+# CHANGED
+
+- eat_piece, chages cell state to False
+
+- end_game, now the game ends!
+
+
+
