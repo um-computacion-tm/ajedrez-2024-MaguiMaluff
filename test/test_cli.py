@@ -44,6 +44,15 @@ class TestCli(unittest.TestCase):
         self.assertEqual(mock_input.call_count, 4)
         self.assertEqual(mock_print.call_count, 21)
         self.assertEqual(mock_chess_move.call_count, 0)
+    
+    @patch('builtins.input', side_effect=['1', 'A', '2', 'A', 'y'],)
+    @patch('builtins.print')
+    @patch.object(Chess, 'move_piece_board')
+    def test_play_works(self, mock_chess_move, mock_print, mock_input,):
+        main()
+        self.assertEqual(mock_input.call_count, 5)
+        self.assertEqual(mock_print.call_count, 20)
+        self.assertEqual(mock_chess_move.call_count, 1)
 
 if __name__ == '__main__':
     unittest.main()
