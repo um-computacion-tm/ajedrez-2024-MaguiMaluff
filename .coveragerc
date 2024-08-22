@@ -1,6 +1,7 @@
 [run]
 source =
     game
+    cli_folder
 omit =
     venv/*
     */test/*

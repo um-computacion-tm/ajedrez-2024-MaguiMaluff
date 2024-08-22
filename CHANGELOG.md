@@ -131,5 +131,11 @@
 
 - end_game, now the game ends!
 
+# 22/08/2024
+
+# FIXED
+
+- Error "No module named 'game'" from cli. Created a folder cli_folder
+
 
 

@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from game.chess import Chess
-from game.cli import play, main
+from cli_folder.cli import play, main
 
 
 class TestCli(unittest.TestCase):
