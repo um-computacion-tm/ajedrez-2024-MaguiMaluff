@@ -1,6 +1,6 @@
 from game.board import Board
 from game.player import Player
-from game.exceptions import WrongPiece, OutOfBoard
+from game.exceptions import WrongPiece, OutOfBoard, NotAnOption
 
 class Chess():
     def __init__(self):
@@ -51,3 +51,5 @@ class Chess():
     def end_game(self, end):
         if end.lower() == 'y':
             self.__playing__= False
+        elif end.lower() != 'n':
+            raise NotAnOption

@@ -137,5 +137,8 @@
 
 - Error "No module named 'game'" from cli. Created a folder cli_folder
 
+# 23/02/2024
 
+# FIXED
 
+- end_game, now raises an exception if the letter is not valid

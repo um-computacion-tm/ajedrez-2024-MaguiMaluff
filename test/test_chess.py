@@ -2,7 +2,7 @@ import unittest
 from game.board import Board
 from game.player import Player
 from game.chess import Chess
-from game.exceptions import WrongPiece, OutOfBoard, LimitedMove
+from game.exceptions import WrongPiece, OutOfBoard, LimitedMove, NotAnOption
 
 class TestChess(unittest.TestCase):
     def test_init(self):
@@ -60,10 +60,20 @@ class TestChess(unittest.TestCase):
         with self.assertRaises(OutOfBoard):
             chess.get_piece(8,4)
     
-    def test_end_game(self):
+    def test_end_game_y(self):
         chess = Chess()
         end = chess.end_game('y')
         self.assertEqual(chess.__playing__, False)
+
+    def test_end_game_n(self):
+        chess = Chess()
+        end = chess.end_game('N')
+        self.assertEqual(chess.__playing__, True)
+
+    def test_end_game_m(self):
+        chess = Chess()
+        with self.assertRaises(NotAnOption):
+            chess.end_game('m')
 
     def test_playin(self):
         chess = Chess()

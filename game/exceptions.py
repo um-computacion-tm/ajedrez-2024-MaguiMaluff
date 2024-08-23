@@ -15,3 +15,6 @@ class SameColor(Exception):
 
 class WrongPiece(Exception):
     pass
+
+class NotAnOption(Exception):
+    pass

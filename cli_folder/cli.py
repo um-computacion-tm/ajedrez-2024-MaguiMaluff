@@ -1,3 +1,4 @@
+import game
 from game.chess import Chess
 
 def main():
