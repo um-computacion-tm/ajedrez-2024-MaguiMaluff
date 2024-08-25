@@ -7,3 +7,4 @@ class TestCell(unittest.TestCase):
         cell = Cell(True, Pieces("Queen", "b", (1,2)))
         self.assertEqual(cell.__state__, True)
         self.assertEqual(cell.__piece__.__name__, "Queen")
+    

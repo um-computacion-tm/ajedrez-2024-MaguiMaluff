@@ -45,6 +45,42 @@ class TestBoard(unittest.TestCase):
             
             self.assertEqual(captured_output.getvalue(), expected_output)
 
+    def test_print_board_moved(self):
+            board = Board()
+            board.set_piece_cell_begining()
+            piece = board.__grid__[1][0].__piece__
+            board.move_piece(piece, [2,0])
+            captured_output = StringIO()
+            sys.stdout = captured_output
+            board.print_board()
+            sys.stdout = sys.__stdout__
+            self.maxDiff = None
+            
+            expected_output = (
+                " --------------------------------------------------------\n"
+                "        |  A  |  B  |  C  |  D  |  E  |  F  |  G  |  H  |\n"
+                " --------------------------------------------------------\n"
+                "     0  |  r  |  n  |  b  |  q  |  k  |  b  |  n  |  r  |\n"
+                " --------------------------------------------------------\n"
+                "     1  |     |  p  |  p  |  p  |  p  |  p  |  p  |  p  |\n"
+                " --------------------------------------------------------\n"
+                "     2  |  p  |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     3  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     4  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     5  |     |     |     |     |     |     |     |     |\n"
+                " --------------------------------------------------------\n"
+                "     6  |  P  |  P  |  P  |  P  |  P  |  P  |  P  |  P  |\n"
+                " --------------------------------------------------------\n"
+                "     7  |  R  |  N  |  B  |  Q  |  K  |  B  |  N  |  R  |\n"
+                " --------------------------------------------------------\n"
+
+            )
+            
+            self.assertEqual(captured_output.getvalue(), expected_output)
+
     def test_set_piece_begining(self):
         board = Board()
         piece_1 = Pieces("Queen", "w", (0,0))
@@ -265,6 +301,16 @@ class TestBoard(unittest.TestCase):
         cell.__state__ = False
         with self.assertRaises(InvalidMove):
             board.pawn(pawn, [5,1])
+    
+    def test_pawn_7(self):
+        board = Board()
+        board.set_piece_cell_begining()
+        pawn = board.__grid__[6][1].__piece__
+        board.move_piece(pawn, [5,1])
+        self.assertEqual(pawn.__position__, [5,1])
+        self.assertEqual(board.__grid__[6][1].__piece__, None)
+        self.assertEqual(board.__grid__[6][1].__state__, True)
+
 
 if __name__ == '__main__':
     unittest.main()

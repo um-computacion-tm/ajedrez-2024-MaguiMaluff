@@ -199,10 +199,15 @@ class Pawn(Pieces):
             list = [[row + 1, column + 1],
                     [row + 1, column],
                     [row + 1, column - 1]]
+            if row == 1:
+                list.append([row + 2, column])
+
         elif self.__color__ == 'b':
             list = [[row - 1, column + 1],
                     [row - 1, column],
                     [row - 1, column - 1]]
+            if row == 6:
+                list.append([row - 2, column])
         
         if new_position not in list:
             raise LimitedMove()

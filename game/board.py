@@ -107,14 +107,17 @@ class Board():
         row = new_position[0]
         column = new_position[1]
         self.__grid__[row][column].__piece__ = piece
+        self.__grid__[row][column].__state__ = False
         piece.__position__ = new_position
 
     def move_piece(self, piece, new_position):
         eat = None
         try:
             if piece.__name__ == "Knight":
+                piece.movement(new_position)
                 eat = self.knight(piece, new_position)
             elif piece.__name__ == "Pawn":
+                piece.movement(new_position)
                 eat = self.pawn(piece, new_position)
             else:
                 squares = piece.movement(new_position)
@@ -123,10 +126,17 @@ class Board():
                 else:
                     eat = self.check_squares_one(piece, new_position)
             if eat == 'eat' or eat == 'move':
+                self.change_cell(piece)
                 self.eat_piece(piece, new_position)
         except Exception as e:
             raise
     
+    def change_cell(self, piece):
+        row = piece.__position__[0]
+        column = piece.__position__[1]
+        cell = self.__grid__[row][column]
+        cell.moved()
+
     def knight(self, piece, new_position):
         squares = piece.movement(new_position)
         eat = self.check_squares_one(piece, squares)
