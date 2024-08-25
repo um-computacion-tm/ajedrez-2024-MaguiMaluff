@@ -1,5 +1,7 @@
 import unittest
+from unittest.mock import patch
 from game.board import Board
+from game.pieces import Pieces, King, Pawn
 from game.player import Player
 from game.chess import Chess
 from game.exceptions import WrongPiece, OutOfBoard, LimitedMove, NotAnOption
@@ -17,6 +19,7 @@ class TestChess(unittest.TestCase):
         chess.next_turn()
         self.assertEqual(chess.__player__.__color__, 'w')
         self.assertEqual(chess.__turn__, 1)
+        self.assertEqual(chess.__number__, 2)
     
     def test_next_turn_2(self):
         chess = Chess()
@@ -60,7 +63,8 @@ class TestChess(unittest.TestCase):
         with self.assertRaises(OutOfBoard):
             chess.get_piece(8,4)
     
-    def test_end_game_y(self):
+    @patch('builtins.print')
+    def test_end_game_y(self, mock_print):
         chess = Chess()
         end = chess.end_game('y')
         self.assertEqual(chess.__playing__, False)
@@ -99,3 +103,32 @@ class TestChess(unittest.TestCase):
         
         with self.assertRaises(ValueError):
             chess.get_column('9') 
+    
+    @patch('builtins.print')
+    def test_move_piece_end_king(self, mock_print):
+        chess = Chess()
+        king = King('King', 'b', [5,6])
+        pawn = Pawn('Pawn', 'w', [4,5])
+        chess.__board__.__pieces__ = [king ,pawn]
+        chess.__board__.set_piece_cell_begining()
+        chess.move_piece_board(pawn, [5,6])
+        self.assertEqual(chess.__playing__, False)
+
+    @patch('builtins.print')
+    def test_check_ending(self, mock_print):
+        chess = Chess()
+        chess.__number__ = 33
+        for lista in  chess.__board__.__grid__:
+            for cell in lista:
+                cell.__state__ = True
+        king = King('King', 'b', [5,6])
+        chess.__board__.__pieces__ = [king]
+        chess.__board__.set_piece_cell_begining()
+        chess.check_ending()
+        self.assertEqual(chess.__playing__, False)
+    
+    def test_end_king_false(self):
+        chess = Chess()
+        end = chess.end_king([6,6])
+        self.assertFalse(end)
+

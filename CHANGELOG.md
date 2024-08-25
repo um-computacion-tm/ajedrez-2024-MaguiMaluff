@@ -142,3 +142,9 @@
 # FIXED
 
 - end_game, now raises an exception if the letter is not valid
+
+# 25/08/2024
+
+# ADDED
+
+- end_king, check_ending and msg

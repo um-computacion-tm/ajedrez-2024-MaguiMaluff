@@ -11,6 +11,7 @@ class Chess():
         self.__turn__ = 1
         self.__player__ = self.__player_1__
         self.__playing__ = True
+        self.__number__ = 0
 
     def is_playing(self):
         return self.__playing__
@@ -18,7 +19,10 @@ class Chess():
     def move_piece_board(self, piece, new_position):
         if piece.__color__ == self.__player__.__color__:
             try:
+                finished = self.end_king(new_position)
                 self.__board__.move_piece(piece, new_position)
+                if finished:
+                    self.end_game('y')
             except Exception as e:
                 raise
         else:
@@ -38,6 +42,7 @@ class Chess():
         elif self.__player__ == self.__player_2__:
             self.__turn__ = 1
             self.__player__ = self.__player_1__
+        self.__number__ += 1
 
     def get_column(self, column):
         letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
@@ -51,5 +56,30 @@ class Chess():
     def end_game(self, end):
         if end.lower() == 'y':
             self.__playing__= False
+            self.msg()
         elif end.lower() != 'n':
             raise NotAnOption
+    
+    def check_ending(self):
+        left_pieces = 0
+        if self.__number__ > 32:
+            for i in self.__board__.__grid__:
+                for x in i:
+                    if x.__state__ == False:
+                        left_pieces += 1
+            if left_pieces <= 1:
+                self.end_game('y')
+    
+    def end_king(self, new_position):
+        row = new_position[0]
+        col = new_position[1]
+        cell = self.__board__.__grid__[row][col]
+        if cell.__state__ == False:
+            if cell.__piece__.__name__ == "King":
+                return True
+            else:
+                return False
+        
+    def msg(self):
+        print('End of game!')
+        print('Player: ', self.__player__.__id__, ' wins!')
