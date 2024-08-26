@@ -66,7 +66,6 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         return squares
     
     def diagonal(self, new_position):
-        ini_position = []
         row = self.__position__[0]
         column = self.__position__[1]
         if row != new_position[0] and column != new_position[1]:
@@ -132,19 +131,10 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             return diagonal
         elif straight != False:
             return straight
-              
-    def on_board(self, new_position):
-        x = new_position[0]
-        y = new_position[1]
-        if x < 0 or x > 7:
-            raise OutOfBoard()
-        elif y < 0 or y > 7:
-            raise OutOfBoard()
-
+        
 class Queen(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.valid_or_invalid(new_position)
             return squares
         except Exception as e:
@@ -168,7 +158,6 @@ class King(Pieces):
         
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             self.limit(new_position)
             squares = self.valid_or_invalid(new_position)
             return squares
@@ -178,8 +167,9 @@ class King(Pieces):
 class Rook(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.straight_line(new_position)
+            if not squares:
+                raise InvalidMove()
             return squares
         except Exception as e:
             raise
@@ -187,8 +177,9 @@ class Rook(Pieces):
 class Bishop(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.diagonal(new_position)
+            if not squares:
+                raise InvalidMove()
             return squares
         except Exception as e:
             raise
@@ -216,7 +207,6 @@ class Pawn(Pieces):
 
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.valid_or_invalid(new_position)
             self.limit(new_position)
             return squares
@@ -241,7 +231,6 @@ class Knight(Pieces):
     
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             self.limit(new_position)
             return(new_position)
         except Exception as e:

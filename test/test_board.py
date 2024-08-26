@@ -3,7 +3,7 @@ from io import StringIO
 import sys
 from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
 from game.board import Board
-from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, LimitedMove
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, LimitedMove, OutOfBoard
 
 class TestBoard(unittest.TestCase):
     def test_init(self):
@@ -338,6 +338,30 @@ class TestBoard(unittest.TestCase):
         self.assertEqual(pawn.__position__, [5,1])
         self.assertEqual(board.__grid__[6][1].__piece__, None)
         self.assertEqual(board.__grid__[6][1].__state__, True)
+
+    # Test Out Of Board
+    def test_out_up(self):
+        board = Board()
+        with self.assertRaises(OutOfBoard):
+            board.on_board([-1, 3])
+
+    def test_out_down(self):
+        board = Board()
+        with self.assertRaises(OutOfBoard):
+            board.on_board([122, 1])
+
+    def test_out_right(self):
+        board = Board()
+        with self.assertRaises(OutOfBoard):
+            board.on_board([1, 34])
+
+    def test_out_left(self):
+        board = Board()
+        with self.assertRaises(OutOfBoard):
+            board.on_board([1, -2])
+
+
+
 
 
 if __name__ == '__main__':

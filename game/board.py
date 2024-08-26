@@ -1,6 +1,6 @@
 from game.pieces import Pieces, Queen, King, Rook, Bishop, Knight, Pawn
 from game.cell import Cell
-from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor
+from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, OutOfBoard
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
@@ -106,10 +106,20 @@ class Board():
         cell.new_piece(piece)
         piece.change_position(new_position)
 
+              
+    def on_board(self, new_position):
+        x = new_position[0]
+        y = new_position[1]
+        if x < 0 or x > 7:
+            raise OutOfBoard()
+        elif y < 0 or y > 7:
+            raise OutOfBoard()
+
     def move_piece(self, piece, new_position):
         eat = None
         cell = self.__grid__[new_position[0]][new_position[-1]]
         try:
+            self.on_board(new_position)
             if piece.__name__ == "Knight":
                 piece.movement(new_position)
                 eat = self.knight(piece, new_position, cell)
