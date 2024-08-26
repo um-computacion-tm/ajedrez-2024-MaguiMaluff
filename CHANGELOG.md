@@ -148,3 +148,21 @@
 # ADDED
 
 - end_king, check_ending and msg
+
+# 26/08/2024
+
+# CHANGED 
+
+- Board, Cell, applied Single Responsability 
+
+- eat_piece, now calls new_piece from cell insted of changing the cell itself. Same with piece position, calls change_position
+
+- check_squares_one, check_squares_multiple, eat_piece, pawn, knight are given the cell instead of searching for it
+
+
+
+# ADDED
+
+- New_piece on Cell
+
+- Print_board, print_turn on chess

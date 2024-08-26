@@ -9,3 +9,7 @@ class Cell():
     def moved(self):
         self.__state__ = True
         self.__piece__ = None
+    
+    def new_piece(self, piece):
+        self.__state__ = False
+        self.__piece__ = piece

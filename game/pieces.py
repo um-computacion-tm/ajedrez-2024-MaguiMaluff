@@ -1,7 +1,7 @@
 from game.exceptions import LimitedMove, InvalidMove, OutOfBoard
 
 
-class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bishop, Knight, Position = (row , column) ♜
+class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bishop, Knight, Position = [row , column]
     def __init__(self, piece, color, initial_position):
         self.__name__ = piece
         self.__color__ = color
@@ -30,6 +30,9 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         elif self.__color__ == 'b':
             self.__image__ = images_black[self.__name__]
     
+    def change_position(self, new_position):
+        self.__position__ = new_position
+
     def straight_line(self, new_position):
         row = self.__position__[0]
         column = self.__position__[1]
@@ -119,7 +122,6 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             column -= 1
             squares.append([row, column])
         return squares
-
         
     def valid_or_invalid(self, new_position):
         straight = self.straight_line(new_position)

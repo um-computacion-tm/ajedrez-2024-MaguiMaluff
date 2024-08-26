@@ -8,8 +8,8 @@ def main():
 
 def play(chess):
     try:
-        chess.__board__.print_board()
-        print("turn: ", chess.__turn__, chess.__player__.__color__)
+        chess.print_board()
+        chess.print_turn()
         row = int(input("From Row: "))
         column = str(input("From Column: "))
         column = chess.get_column(column)

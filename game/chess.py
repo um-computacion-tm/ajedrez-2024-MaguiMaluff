@@ -52,7 +52,6 @@ class Chess():
         else:
             raise ValueError("Invalid column letter")
         
-
     def end_game(self, end):
         if end.lower() == 'y':
             self.__playing__= False
@@ -83,3 +82,14 @@ class Chess():
     def msg(self):
         print('End of game!')
         print('Player: ', self.__player__.__id__, ' wins!')
+
+    def print_turn(self):
+        color = None
+        if self.__player__.__color__ == 'w': 
+            color = 'White'
+        elif self.__player__.__color__ == 'b':
+            color = 'Black'
+        print("turn: ", self.__turn__, color)
+    
+    def print_board(self):
+        self.__board__.print_board()
