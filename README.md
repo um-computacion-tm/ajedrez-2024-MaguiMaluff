@@ -43,6 +43,6 @@
 
 - Download the file Dockerfile
 
-- On docker, run docker build -t my_chess . to build yhe image
+- On docker, run docker build -t my_chess . to build the image
 
 - Run docker run -it my_chess to play
