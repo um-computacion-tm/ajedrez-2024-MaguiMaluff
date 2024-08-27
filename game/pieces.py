@@ -1,35 +1,42 @@
 from game.exceptions import LimitedMove, InvalidMove, OutOfBoard
+from emoji import emojize
 
 
-class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bishop, Knight, Position = (row , column) ♜
+class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bishop, Knight, Position = [row , column]
     def __init__(self, piece, color, initial_position):
         self.__name__ = piece
         self.__color__ = color
         self.__position__ = initial_position
         self.__image__ = None
+        self.set_images()
     
     def set_images(self):
         images_white = {
-                        'Queen': 'q',
-                        'King': 'k',
-                        'Pawn' : 'p',
-                        'Knight': 'n',
-                        'Rook': 'r',
-                        'Bishop' : 'b'
+                        'Queen': emojize(':crown:'),
+                        'King': emojize(':elf:'),
+                        'Pawn' : emojize(':nose:'),
+                        'Knight': emojize(':unicorn:'),
+                        'Rook': emojize(':moai:'),
+                        'Bishop' : emojize(':trident_emblem:')
                         }
         images_black = {
-                        'Queen': 'Q',
-                        'King': 'K',
-                        'Pawn' : 'P',
-                        'Knight': 'N',
-                        'Rook': 'R',
-                        'Bishop' : 'B'
+                        'Queen': emojize(':blossom:'),
+                        'King': emojize(':prince:'),
+                        'Pawn' : emojize(':bust_in_silhouette:'),
+                        'Knight': emojize(':horse_face:'),
+                        'Rook': emojize(':office_building:'),
+                        'Bishop' : emojize(':maple_leaf:')
                         }
         if self.__color__ == 'w':
             self.__image__ = images_white[self.__name__]
         elif self.__color__ == 'b':
             self.__image__ = images_black[self.__name__]
     
+    def change_position(self, new_position):
+        self.__position__ = new_position
+
+    ### Checks if the movement is straight. If the column or row doesnt change,
+    ### its moving in a straight line
     def straight_line(self, new_position):
         row = self.__position__[0]
         column = self.__position__[1]
@@ -42,6 +49,8 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             squares = self.straight_column(row, column, new_position)
             return squares
     
+    ### Makes a list with each position the piece goes
+    ### to before getting to the new position.
     def straight_row(self, row, column, new_position):
         squares = []
         if column < new_position[1]:
@@ -62,8 +71,9 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
                 squares.append([row - x - 1, column])
         return squares
     
+    ### Checks if the movement is diagonal, both row and column
+    ### should be atleast different. Then calls for check type diagonal 
     def diagonal(self, new_position):
-        ini_position = []
         row = self.__position__[0]
         column = self.__position__[1]
         if row != new_position[0] and column != new_position[1]:
@@ -77,6 +87,9 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         else:
             return False
     
+    ### Depending on how the row and column changes, it returns a
+    ### string with the name of the function that should be call
+    ### to get the positions
     def check_type_diagonal(self, row, column, new_position):
         if row > new_position[0] and column > new_position[1]:
             return "left_up"
@@ -87,7 +100,8 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         elif row < new_position[0] and column < new_position[1]:
             return "right_down"
 
-
+    ### Makes a list with each position the piece goes
+    ### to before getting to the new position.
     def right_down(self,row, column, new_position):
         squares = []
         for i in range(new_position[0] - row):
@@ -119,8 +133,9 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             column -= 1
             squares.append([row, column])
         return squares
-
-        
+    
+    ### A movement cant be diagonal and straight or none at the same time
+    ### (only exception would be knight)
     def valid_or_invalid(self, new_position):
         straight = self.straight_line(new_position)
         diagonal = self.diagonal(new_position)
@@ -130,19 +145,10 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
             return diagonal
         elif straight != False:
             return straight
-              
-    def on_board(self, new_position):
-        x = new_position[0]
-        y = new_position[1]
-        if x < 0 or x > 7:
-            raise OutOfBoard()
-        elif y < 0 or y > 7:
-            raise OutOfBoard()
-
+        
 class Queen(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.valid_or_invalid(new_position)
             return squares
         except Exception as e:
@@ -166,7 +172,6 @@ class King(Pieces):
         
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             self.limit(new_position)
             squares = self.valid_or_invalid(new_position)
             return squares
@@ -176,8 +181,9 @@ class King(Pieces):
 class Rook(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.straight_line(new_position)
+            if not squares:
+                raise InvalidMove()
             return squares
         except Exception as e:
             raise
@@ -185,8 +191,9 @@ class Rook(Pieces):
 class Bishop(Pieces):
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.diagonal(new_position)
+            if not squares:
+                raise InvalidMove()
             return squares
         except Exception as e:
             raise
@@ -214,12 +221,21 @@ class Pawn(Pieces):
 
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             squares = self.valid_or_invalid(new_position)
             self.limit(new_position)
             return squares
         except Exception as e:
             raise
+    
+    ### A pawn can change to another piece (excluding King),
+    ### when it reaches the other side of the board
+    def change_pawn(self):
+        if self.__position__[0] == 7 and self.__color__ == 'w':
+            return True
+        elif self.__position__[0] == 0 and self.__color__ == 'b':
+            return True
+        else:
+            return False
 
 class Knight(Pieces):
     def limit(self, new_position):
@@ -239,7 +255,6 @@ class Knight(Pieces):
     
     def movement(self, new_position):
         try:
-            self.on_board(new_position)
             self.limit(new_position)
             return(new_position)
         except Exception as e:

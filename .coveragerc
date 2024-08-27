@@ -8,6 +8,7 @@ omit =
     */__init__.py
 [report]
 exclude_lines =
+    main()
     pragma: no cover
     def __repr__
     def setUp

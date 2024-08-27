@@ -1,4 +1,3 @@
-import game
 from game.chess import Chess
 
 def main():
@@ -9,8 +8,7 @@ def main():
 
 def play(chess):
     try:
-        chess.__board__.print_board()
-        print("turn: ", chess.__turn__, chess.__player__.__color__)
+        chess.print_all()
         row = int(input("From Row: "))
         column = str(input("From Column: "))
         column = chess.get_column(column)

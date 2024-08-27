@@ -142,3 +142,52 @@
 # FIXED
 
 - end_game, now raises an exception if the letter is not valid
+
+# 25/08/2024
+
+# ADDED
+
+- end_king, check_ending and msg
+
+# 26/08/2024
+
+# CHANGED 
+
+- Board, Cell, applied Single Responsability 
+
+- eat_piece, now calls new_piece from cell insted of changing the cell itself. Same with piece position, calls change_position
+
+- check_squares_one, check_squares_multiple, eat_piece, pawn, knight are given the cell instead of searching for it
+
+
+# ADDED
+
+- New_piece on Cell
+
+- Print_board, print_turn on chess
+
+- on_board to Board
+
+# FIXED
+
+- Rook and Bishop movement
+
+# DELETED
+
+- on_board from Pieces
+
+# 27/08/2024
+
+# ADDED
+
+- function print_all to Chess. In charge of printing turn, board and pieces.
+
+- Function change_pawn to Chess and Pawn. 
+
+# CHANGED
+
+- Images for pieces, now emojis instead of low and upper letters.
+
+- Dockerfile
+
+- print_pieces

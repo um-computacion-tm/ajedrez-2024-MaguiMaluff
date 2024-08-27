@@ -11,8 +11,8 @@ class TestPieces(unittest.TestCase):
             queen_2 = Pieces("Queen", "b", (0,0))
             queen_1.set_images()
             queen_2.set_images()
-            self.assertEqual(queen_1.__image__, 'q')
-            self.assertEqual(queen_2.__image__, 'Q')
+            self.assertEqual(queen_1.__image__, '👑')
+            self.assertEqual(queen_2.__image__, '🌼')
         
 
         def test_rook_1(self):
@@ -78,16 +78,6 @@ class TestPieces(unittest.TestCase):
 
         
 class TestQueen(unittest.TestCase):
-    def test_queen_out_down(self):
-        queen = Queen('Queen', 'w', [0,3])
-        with self.assertRaises(OutOfBoard):
-            queen.movement([0,8])
-    
-    def test_queen_out_up(self):
-        queen = Queen('Queen', 'w', [0,3])
-        with self.assertRaises(OutOfBoard):
-            queen.movement([-3,0])
-    
     def test_queen_straight_right(self):
         queen = Queen('Queen', 'w', [0,3])
         list = queen.movement([0,7])
@@ -102,7 +92,6 @@ class TestQueen(unittest.TestCase):
         queen = Queen('Queen', 'b', [7,3])
         list = queen.movement([5,1])
         self.assertEqual(list, [[6,2], [5,1]])
-
     
     def test_queen_diagonal_right_b(self):
         queen = Queen('Queen', 'b', [7,3])
@@ -118,14 +107,13 @@ class TestQueen(unittest.TestCase):
         queen = Queen('Queen', 'w', [0,3])
         list = queen.movement([4,7])
         self.assertEqual(list, [[1,4], [2,5], [3,6], [4,7]])
+    
+    def test_queen_invalid(self):
+        queen = Queen('Queen', 'w', [0,3])
+        with self.assertRaises(InvalidMove):
+         queen.movement([3,5])
 
 class TestKing(unittest.TestCase):
-
-    def test_king_1(self):
-        king = King('King', 'b', [0,0])
-        with self.assertRaises(OutOfBoard):
-            king.movement([0,1212])
-
     def test_king_2(self):
         king = King('King', 'b', [0,0])
         with self.assertRaises(LimitedMove):
@@ -152,12 +140,8 @@ class TestKing(unittest.TestCase):
         self.assertEqual(list, [[7,2]])
 
 
+
 class TestBishop(unittest.TestCase):
-    def test_bishop_1(self):
-        bishop = Bishop('Bishop', 'b', [0,0])
-        with self.assertRaises(OutOfBoard):
-            bishop.movement([0,1212])
-    
     def test_bishop_2(self):
         bishop = Bishop('Bishop', 'b', [0,0])
         result = bishop.movement([1,1])
@@ -165,23 +149,21 @@ class TestBishop(unittest.TestCase):
     
     def test_bishop_3(self):
         bishop = Bishop('Bishop', 'b', [0,0])
-        result = bishop.diagonal([0,4])
-        self.assertEqual(result, False)
+        with self.assertRaises(InvalidMove):
+            bishop.movement([0,4])
     
     def test_bishop_2(self):
         bishop = Bishop('Bishop', 'b', [5,7])
         result = bishop.movement([0,2])
         self.assertEqual(result, [[4, 6], [3, 5], [2, 4], [1, 3], [0, 2]])
+    
+
 
 class TestRook(unittest.TestCase):
-    def test_rook_1(self):
-        rook = Rook('Rook', 'b', [0,0])
-        with self.assertRaises(OutOfBoard):
-            rook.movement([0,1212])
-    
     def test_rook_2(self):
         rook = Rook('Rook', 'b', [0,0])
-        result = rook.movement([1,1])
+        with self.assertRaises(InvalidMove):
+            rook.movement([1,1])
         
     
     def test_rook_3(self):
@@ -190,25 +172,32 @@ class TestRook(unittest.TestCase):
         self.assertEqual(result, False)
 
 class TestPawn(unittest.TestCase):
-    def test_pawn_1(self):
-        pawn = Pawn('Pawn', 'b', [0,0])
-        with self.assertRaises(OutOfBoard):
-            pawn.movement([0,1212])
-    
     def test_pawn_2(self):
         pawn = Pawn('Pawn', 'w', [0,0])
-        result = pawn.movement([1,1])
+        self.assertTrue(pawn.movement([1,1]))
     
     def test_pawn_3(self):
         pawn = Pawn('Pawn', 'b', [0,0])
         with self.assertRaises(LimitedMove):
             pawn.movement([0,3])
+    
+    def test_change_pawn(self):
+        pawn = Pawn('Pawn', 'b', [0,0])
+        self.assertTrue(pawn.change_pawn())
+
+    def test_change_pawn_2(self):
+        pawn = Pawn('Pawn', 'w', [7,4])
+        self.assertTrue(pawn.change_pawn())
+    
+    def test_change_pawn_3(self):
+        pawn = Pawn('Pawn', 'b', [7,0])
+        self.assertFalse(pawn.change_pawn())
+
+    def test_change_pawn_4(self):
+        pawn = Pawn('Pawn', 'w', [4,5])
+        self.assertFalse(pawn.change_pawn())
 
 class TestKnight(unittest.TestCase):
-    def test_knight_1(self):
-        knight = Knight('Knight', 'b', [0,0])
-        with self.assertRaises(OutOfBoard):
-            knight.movement([0,-4])
     
     def test_knight_2(self):
         knight = Knight('Knight', 'b', [0,0])
