@@ -178,6 +178,8 @@
 
 - on_board from Pieces
 
+- Function knight from Board
+
 # 27/08/2024
 
 # ADDED

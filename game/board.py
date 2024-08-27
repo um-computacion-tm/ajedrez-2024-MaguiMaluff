@@ -20,36 +20,38 @@ class Board():
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 5]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 5]),
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 6]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 6]),
                                 Pawn(piece="Pawn" ,  color="w", initial_position=[1, 7]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 7]),]
-            ### Lista de listas de 8x8
+            
+            """On the grid, each square is a cell, with state True(meaning is empty), and piece None"""
             self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
-    ### Impresion del board, con las piezas en posicion actual
     def print_board(self):
+        """Calls for functions to print the full board"""
         self.print_header()
         self.print_pieces()
 
-    ### Imprime las letras de cada columna
     def print_header(self):
+        """Prints the header, formats the letters"""
         print(' '+'-'*64)
         print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
         print(' '+'-'*64)
     
-    ### Llama a print_row 8 veces
     def print_pieces(self):
+        """Calls print_row 8 times"""
         for i in range(8):
             self.print_rows(i)
             
-    ### Row es una lista, a la que voy agrgando de a uno la imagen de la pieza que esta
-    ### en esa posicion, si no hay pieza, no imprime nada alli.
-    ### Imprime todo formateado para que se vea ordenado
-    ### self.__grid__[i][x].__piece__.__image__, grid[][] me selecciona una fila y una columna
-    ### donde hay una celda, .piece me llama a la pieza que esta en la celda, -image, se
-    ### se refiere a la imagen de la pieza.
     def print_rows(self, i):
+        """Row is a list where an image is added if the cell is occupied or spaces if is not.
+            The row is then format. 
+
+            Parameter
+            ---------
+            i : int
+                The first position in row is i, which is the number of row on the board."""
         row = [i] 
         for x in range(8):
                 cell = self.get_cell([i,x])
-                if self.__grid__[i][x].__state__ == False:
+                if cell.__state__ == False:
                     piece = self.get_piece([i,x])
                     row.append('  ' + str(piece.__image__) + '  |')
                 else:
@@ -58,24 +60,41 @@ class Board():
         print(' '+'-'*64)
 
                 
-
-    ### Order by pieces, check the piece position, asign the 
-    ### piece to the cell that belongs to the position on the grid
-    ### and changes the state
     def set_piece_cell_begining(self):
-        for i in self.__pieces__:
-            i.set_images()
-            position = i.__position__
+        """Goes through the pieces in board, sets its image, looks for the cell that represents that position
+            calls cell.new_piece, changing the cell state and piece"""
+        for piece in self.__pieces__:
+            piece.set_images()
+            position = piece.__position__
             x = position[0]
             y = position[1]
-            self.__grid__[x][y].__state__ = False
-            self.__grid__[x][y].__piece__ = i
+            cell = self.get_cell([x,y])
+            cell.new_piece(piece)
 
-    ### If the movement is valid, this function checks each
-    ### square the piece intents to go through for pieces.
-    ### A cell could be occupied only if the piece there 
-    ### is a different color and the cell is the last position
+
     def check_squares_multiple(self, piece, squares, cell):
+        """Checks each square the piece intents to go through for pieces.
+            A cell could be occupied only if the piece there is a different 
+            color and the cell is the last position. If the cell is ocuppied and
+            the square is the last, calls fot check_square_one() to check if the
+            piece could be capturing another one. If none of the squares its occupied, 
+            it just returns "move".
+
+            Parameters
+            ----------
+            piece : Piece object 
+                Piece intended to move.
+            squares : list
+                Positions that the piece goes through before the new position.
+            cell : Cell object
+                Last square
+
+            Raises
+            ------
+            GoingThroughAPiece
+                If one of the squares its occupied and the square its not the last
+                on the list.
+            """
         for square in squares:
             x = square[0]
             y = square[1]
@@ -92,42 +111,105 @@ class Board():
             elif cell_state == True and [x , y] == squares[-1]:
                 return 'move'
     
-    ### If the piece only moves one square, this function
-    ### checks if the new cell is occupied, and if it is,
-    ### it checks the color.
+
     def check_squares_one(self, piece, squares, cell):
-            x = squares[0]
-            y = squares[1]
-            new_piece = self.get_piece([x, y])
-            if cell.__state__ == False and new_piece.__color__ == piece.__color__:
-                raise SameColor("Oops! You`re trying to eat your own piece")
-            elif cell.__state__ == True:
-                return 'move'
-            else: 
-                return "eat"
+        """Checks the square to see if its occupied by another piece,
+            if it is, checks if the colors are different. If they are different,
+            then it returns eat, if they are the same it raises an exception.
+            If the square its free, it returns move.
+            
+
+            Parameters
+            ----------
+    
+            piece : Piece object 
+                Piece intended to move.
+            squares : list
+                Positions that the piece goes through before the new position.
+            cell : Cell object
+                Last square
+            
+            Raises
+            ------
+            SameColor
+                If the cell its occupied and the piece intended to move
+                has the same color as the piece on the cell.
+            """
+        x = squares[0]
+        y = squares[1]
+        new_piece = self.get_piece([x, y])
+        if cell.__state__ == False and new_piece.__color__ == piece.__color__:
+            raise SameColor("Oops! You`re trying to eat your own piece")
+        elif cell.__state__ == True:
+            return 'move'
+        else: 
+            return "eat"
 
     def eat_piece(self, piece, new_position, cell):
+        """ Calls to new_piece() to change the piece belonging to the cell.
+            Calls to change_position() to change the position of the piece.
+
+            Parameters
+            ----------
+            piece : Piece object 
+                Piece intended to move.
+            new_position : list
+                Position that the piece moves to.
+            cell : Cell object
+                Last square
+            """
         cell.new_piece(piece)
         piece.change_position(new_position)
 
               
     def on_board(self, new_position):
-        x = new_position[0]
-        y = new_position[1]
-        if x < 0 or x > 7:
+        """ Checks if the new_position is on the board, meaning the row 
+            and column are between 0 and 7. 
+
+            Parameters
+            ----------
+            piece : Piece object 
+                Piece intended to move.
+            new_position : list
+                Position that the piece moves to.
+
+            Raises
+            ------
+            OutOfBoard
+                If either row or column are greater than 7 or smaller than 0.
+            """
+        row = new_position[0]
+        column = new_position[1]
+        if row < 0 or row > 7:
             raise OutOfBoard("Please choose a valid position")
-        elif y < 0 or y > 7:
+        elif column < 0 or column > 7:
             raise OutOfBoard("Please choose a valid position")
 
     def move_piece(self, piece, new_position):
+        """ In charge of verification for the piece movement. First checks
+            if the new position is on board calling on_board(). Then checks 
+            for exceptions of movement, if the piece is a Pawn, it calls
+            for the piece movement() and then for pawn() for an exclusive 
+            verification of movement.
+
+            If the piece is other than Pawn, calls for movement(), which returns
+            a list of squares. If this list is longer than 1, calls for check_squares_multiple(),
+            if its not, calls for check_squares_one(). Then checks if the result of either one 
+            is move or eat, if it is it calls for change_cell() which changes the old cell to free,
+            and eat_piece().
+
+            Parameters
+            ----------
+            piece : Piece object 
+                Piece intended to move.
+            new_position : list
+                Position that the piece moves to.
+            """
         eat = None
         cell = self.get_cell(new_position)
         try:
-            self.on_board(new_position)
-            if piece.__name__ == "Knight":
-                piece.movement(new_position)
-                eat = self.knight(piece, new_position, cell)
-            elif piece.__name__ == "Pawn":
+            self.on_board(new_position) 
+            if piece.__name__ == "Pawn":
                 piece.movement(new_position)
                 eat = self.pawn(piece, new_position, cell)
             else:
@@ -143,42 +225,85 @@ class Board():
             raise
     
     def change_cell(self, piece):
+        """Changes the old cell, the position in which the piece was
+            before movement. 
+
+            Parameters
+            ----------
+            piece : Piece object
+                Piece that has already moved
+        """
         row = piece.__position__[0]
         column = piece.__position__[1]
-        cell = self.__grid__[row][column]
+        cell = self.get_cell([row, column])
         cell.moved()
 
-    def knight(self, piece, new_position, cell):
-        squares = piece.movement(new_position)
-        eat = self.check_squares_one(piece, squares, cell)
-        return eat
-    
+
     def pawn(self, piece, new_position, cell):
+        """Compares the new_position and looks for it in list of valid positions also 
+            it calls for check_square_one() and saves the ressult in the variable eat.
+            If new_position is in eating, it means that the movement is diagonal, 
+            that means it must be capturing a piece. If eat is not 'eat', then is an
+            Invalid Move. Otherwise, if its 'eat', then it returns the variable eat. 
+            Now if the new_position is not in eating, and the variable eat is 'eat',
+            it means that the movemnt is diagonal and is not capturing anything, therefore
+            its invalid.
+
+            Parameters
+            ----------
+            piece : Pawn object 
+                Piece intended to move.
+            new_position : list
+                Position that the piece moves to.
+            cell : Cell object
+                Cell that represents that position.
+
+            Raises
+            ------
+            InvalidMove
+                If the movement is diagonal and the piece is not capturing anything.
+                If the movement is straight and the piece is capturing something.
+            """
         row = piece.__position__[0]
         column = piece.__position__[1]
-        # This positions are diagonal, pawn should be
-        # eating in order to move there
         eating = [[row + 1, column + 1],
                   [row + 1, column - 1], 
                   [row - 1, column + 1],
                   [row - 1, column - 1]]
+        eat = self.check_squares_one(piece, new_position, cell)
         if new_position in eating:
-            eat = self.check_squares_one(piece, new_position, cell)
             if eat != 'eat':
                 raise InvalidMove("This is not a valid move")
         else:
-            eat = self.check_squares_one(piece, new_position, cell)
             if eat == 'eat':
                 raise InvalidMove("This is not a valid move")
         return eat
     
     def get_cell(self, position):
+        """Gets a cell from the grid, row is the first value of
+            position and col the second. Looks fot that position
+            on the grid and returns the cell.
+
+            Parameters
+            ----------
+            position : list
+                Coordinates of the cell required
+        """
         row = position[0]
         col = position[1]
         cell = self.__grid__[row][col]
         return cell
 
     def get_piece(self, position):
+        """Gets a piece from a cell from the grid. Calls get_cell()
+            to get the cell, then gets the piece that belongs on that
+            cell and returns it. 
+
+            Parameters
+            ----------
+            position : list
+                Coordinates of the cell required
+        """
         cell = self.get_cell(position)
         piece = cell.__piece__
         return piece
