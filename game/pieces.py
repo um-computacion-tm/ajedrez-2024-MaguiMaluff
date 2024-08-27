@@ -140,7 +140,7 @@ class Pieces(): ###Color = black or white, Piece = Queen, King, Pawn, Rook, Bish
         straight = self.straight_line(new_position)
         diagonal = self.diagonal(new_position)
         if diagonal == straight:
-            raise InvalidMove()
+            raise InvalidMove("This is not a valid move")
         elif diagonal != False:
             return diagonal
         elif straight != False:
@@ -168,7 +168,7 @@ class King(Pieces):
                 [row, column - 1]]
         
         if new_position not in list:
-            raise LimitedMove()
+            raise LimitedMove("You can only move on square")
         
     def movement(self, new_position):
         try:
@@ -183,7 +183,7 @@ class Rook(Pieces):
         try:
             squares = self.straight_line(new_position)
             if not squares:
-                raise InvalidMove()
+                raise InvalidMove("This is not a valid move")
             return squares
         except Exception as e:
             raise
@@ -193,7 +193,7 @@ class Bishop(Pieces):
         try:
             squares = self.diagonal(new_position)
             if not squares:
-                raise InvalidMove()
+                raise InvalidMove("This is not a valid move")
             return squares
         except Exception as e:
             raise
@@ -217,7 +217,7 @@ class Pawn(Pieces):
                 list.append([row - 2, column])
         
         if new_position not in list:
-            raise LimitedMove()
+            raise LimitedMove("You can only move on square")
 
     def movement(self, new_position):
         try:
@@ -251,7 +251,7 @@ class Knight(Pieces):
                 [row + 2, column + 1]]
         
         if new_position not in list:
-            raise LimitedMove()
+            raise LimitedMove("You can only move in an L shape")
     
     def movement(self, new_position):
         try:

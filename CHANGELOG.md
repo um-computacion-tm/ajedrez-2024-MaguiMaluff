@@ -159,6 +159,8 @@
 
 - check_squares_one, check_squares_multiple, eat_piece, pawn, knight are given the cell instead of searching for it
 
+- exceptions all around, now they return a string explaining the error
+
 
 # ADDED
 

@@ -31,14 +31,14 @@ class Chess():
             except Exception as e:
                 raise
         else:
-            raise WrongPiece
+            raise WrongPiece("Oops! You`re trying to move the opponent`s Piece")
     
     def get_piece(self, row, column):
         if row < 8 and column < 8 and row >= 0 and column >= 0:
             piece = self.__board__.__grid__[row][column].__piece__
             return piece
         else:
-            raise OutOfBoard
+            raise OutOfBoard("Please choose a valid position")
     
     def next_turn(self):
         if self.__player__ == self.__player_1__:
@@ -62,7 +62,7 @@ class Chess():
             self.__playing__= False
             self.msg()
         elif end.lower() != 'n':
-            raise NotAnOption
+            raise NotAnOption("Please enter y or n")
     
     def check_ending(self):
         left_pieces = 0
@@ -94,7 +94,7 @@ class Chess():
             color = 'White'
         elif self.__player__.__color__ == 'b':
             color = 'Black'
-        print("Turn --> Player: ", self.__turn__, color)
+        print("Turn --> Player: ", self.__turn__," Color: ", color)
     
     def print_board(self):
         self.__board__.print_board()
@@ -125,7 +125,7 @@ class Chess():
                 cell = self.__board__.get_cell(new_position)
                 self.__board__.eat_piece(new_piece, new_position, cell)
             else:
-                raise InvalidPiece
+                raise InvalidPiece("Please choose a valid Piece")
                 
 
 

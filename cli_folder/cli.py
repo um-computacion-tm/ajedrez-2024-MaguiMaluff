@@ -21,7 +21,7 @@ def play(chess):
         chess.next_turn()
 
     except Exception as e:
-        print('Error', e)
+        print('Error --> ', e)
 
 
 
