@@ -82,7 +82,7 @@ class Board():
             old_cell = self.get_cell([x,y])
             cell_state = old_cell.__state__
             if cell_state == False and [x , y] != squares[-1]:
-                raise GoingThroughAPiece()
+                raise GoingThroughAPiece("Oops! You`re trying to go through a piece")
             elif cell_state == False and [x , y] == squares[-1]:
                 try:
                     eat = self.check_squares_one(piece, squares[-1], cell)
@@ -100,7 +100,7 @@ class Board():
             y = squares[1]
             new_piece = self.get_piece([x, y])
             if cell.__state__ == False and new_piece.__color__ == piece.__color__:
-                raise SameColor()
+                raise SameColor("Oops! You`re trying to eat your own piece")
             elif cell.__state__ == True:
                 return 'move'
             else: 
@@ -115,9 +115,9 @@ class Board():
         x = new_position[0]
         y = new_position[1]
         if x < 0 or x > 7:
-            raise OutOfBoard()
+            raise OutOfBoard("Please choose a valid position")
         elif y < 0 or y > 7:
-            raise OutOfBoard()
+            raise OutOfBoard("Please choose a valid position")
 
     def move_piece(self, piece, new_position):
         eat = None
@@ -165,11 +165,11 @@ class Board():
         if new_position in eating:
             eat = self.check_squares_one(piece, new_position, cell)
             if eat != 'eat':
-                raise InvalidMove
+                raise InvalidMove("This is not a valid move")
         else:
             eat = self.check_squares_one(piece, new_position, cell)
             if eat == 'eat':
-                raise InvalidMove()
+                raise InvalidMove("This is not a valid move")
         return eat
     
     def get_cell(self, position):
