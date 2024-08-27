@@ -99,24 +99,14 @@ class Chess():
         self.__board__.print_board()
     
     def print_pieces(self):
-        images_white = {
-                        'Queen': emojize(':crown:'),
-                        'King': emojize(':elf:'),
-                        'Pawn' : emojize(':nose:'),
-                        'Knight': emojize(':unicorn:'),
-                        'Rook': emojize(':moai:'),
-                        'Bishop' : emojize(':trident_emblem:')
-                        }
-        images_black = {
-                        'Queen': emojize(':blossom:'),
-                        'King': emojize(':prince:'),
-                        'Pawn' : emojize(':bust_in_silhouette:'),
-                        'Knight': emojize(':horse_face:'),
-                        'Rook': emojize(':office_building:'),
-                        'Bishop' : emojize(':maple_leaf:')
-                        }
-        print('White Pieces: ', '\n', images_white, '\n', 'Black Pieces: ', '\n', images_black )
-    
+        print('White Pieces: ',  '  Black Pieces: ', '\n')
+        print(' Queen: ', emojize(':crown:'), '      Queen: ', emojize(':blossom:'),'\n',
+              'King:  ', emojize(':elf:'), '      King:  ', emojize(':prince:'),'\n',
+              'Pawn:  ', emojize(':nose:'), '      Pawn:  ' , emojize(':bust_in_silhouette:'),'\n',
+              'Knight:', emojize(':unicorn:'), '      Knight:' , emojize(':horse_face:'),'\n',
+              'Rook:  ', emojize(':moai:'), '      Rook:  ', emojize(':office_building:'),'\n',
+              'Bishop:', emojize(':trident_emblem:'), '      Bishop:' , emojize(':maple_leaf:'),'\n')
+                        
     def print_all(self):
         self.print_pieces()
         self.print_board()

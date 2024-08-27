@@ -187,3 +187,7 @@
 # CHANGED
 
 - Images for pieces, now emojis instead of low and upper letters.
+
+- Dockerfile
+
+- print_pieces
