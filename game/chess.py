@@ -27,6 +27,7 @@ class Chess():
                     self.change_pawn(piece, new_position)
                 if finished:
                     self.end_game('y')
+                    return False
             except Exception as e:
                 raise
         else:
@@ -93,7 +94,7 @@ class Chess():
             color = 'White'
         elif self.__player__.__color__ == 'b':
             color = 'Black'
-        print("turn: ", self.__turn__, color)
+        print("Turn --> Player: ", self.__turn__, color)
     
     def print_board(self):
         self.__board__.print_board()
@@ -114,7 +115,6 @@ class Chess():
     
     def change_pawn(self, piece, new_position):
         if piece.change_pawn():
-            print('entre')
             print('You`ve reach the end')
             print('Choose between: Rook, Bishop, Knight and Queen')
             new_piece = str(input('Which piece do you want?: ')).title()
