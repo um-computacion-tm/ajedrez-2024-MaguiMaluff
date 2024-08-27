@@ -18,3 +18,6 @@ class WrongPiece(Exception):
 
 class NotAnOption(Exception):
     pass
+
+class InvalidPiece(Exception):
+    pass

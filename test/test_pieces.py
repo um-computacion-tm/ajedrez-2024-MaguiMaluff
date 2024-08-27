@@ -11,8 +11,8 @@ class TestPieces(unittest.TestCase):
             queen_2 = Pieces("Queen", "b", (0,0))
             queen_1.set_images()
             queen_2.set_images()
-            self.assertEqual(queen_1.__image__, 'q')
-            self.assertEqual(queen_2.__image__, 'Q')
+            self.assertEqual(queen_1.__image__, '👑')
+            self.assertEqual(queen_2.__image__, '🌼')
         
 
         def test_rook_1(self):
@@ -174,12 +174,28 @@ class TestRook(unittest.TestCase):
 class TestPawn(unittest.TestCase):
     def test_pawn_2(self):
         pawn = Pawn('Pawn', 'w', [0,0])
-        result = pawn.movement([1,1])
+        self.assertTrue(pawn.movement([1,1]))
     
     def test_pawn_3(self):
         pawn = Pawn('Pawn', 'b', [0,0])
         with self.assertRaises(LimitedMove):
             pawn.movement([0,3])
+    
+    def test_change_pawn(self):
+        pawn = Pawn('Pawn', 'b', [0,0])
+        self.assertTrue(pawn.change_pawn())
+
+    def test_change_pawn_2(self):
+        pawn = Pawn('Pawn', 'w', [7,4])
+        self.assertTrue(pawn.change_pawn())
+    
+    def test_change_pawn_3(self):
+        pawn = Pawn('Pawn', 'b', [7,0])
+        self.assertFalse(pawn.change_pawn())
+
+    def test_change_pawn_4(self):
+        pawn = Pawn('Pawn', 'w', [4,5])
+        self.assertFalse(pawn.change_pawn())
 
 class TestKnight(unittest.TestCase):
     

@@ -175,3 +175,15 @@
 # DELETED
 
 - on_board from Pieces
+
+# 27/08/2024
+
+# ADDED
+
+- function print_all to Chess. In charge of printing turn, board and pieces.
+
+- Function change_pawn to Chess and Pawn. 
+
+# CHANGED
+
+- Images for pieces, now emojis instead of low and upper letters.

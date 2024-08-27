@@ -1,1 +1,2 @@
 coverage==7.6.1
+emoji==2.12.1

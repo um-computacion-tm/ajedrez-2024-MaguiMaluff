@@ -30,9 +30,9 @@ class Board():
 
     ### Imprime las letras de cada columna
     def print_header(self):
-        print(' '+'-'*56)
-        print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
-        print(' '+'-'*56)
+        print(' '+'-'*64)
+        print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
+        print(' '+'-'*64)
     
     ### Llama a print_row 8 veces
     def print_pieces(self):
@@ -48,12 +48,14 @@ class Board():
     def print_rows(self, i):
         row = [i] 
         for x in range(8):
+                cell = self.get_cell([i,x])
                 if self.__grid__[i][x].__state__ == False:
-                    row.append(str(self.__grid__[i][x].__piece__.__image__))
+                    piece = self.get_piece([i,x])
+                    row.append('  ' + str(piece.__image__) + '  |')
                 else:
-                    row += ' '
-        print('   {:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|{:^5}|'.format(*row))
-        print(' '+'-'*56)
+                    row.append('      |')
+        print('  {:^6}|{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}'.format(*row))
+        print(' '+'-'*64)
 
                 
 
@@ -77,7 +79,8 @@ class Board():
         for square in squares:
             x = square[0]
             y = square[1]
-            cell_state =self.__grid__[x][y].__state__
+            old_cell = self.get_cell([x,y])
+            cell_state = old_cell.__state__
             if cell_state == False and [x , y] != squares[-1]:
                 raise GoingThroughAPiece()
             elif cell_state == False and [x , y] == squares[-1]:
@@ -95,7 +98,8 @@ class Board():
     def check_squares_one(self, piece, squares, cell):
             x = squares[0]
             y = squares[1]
-            if cell.__state__ == False and cell.__piece__.__color__ == piece.__color__:
+            new_piece = self.get_piece([x, y])
+            if cell.__state__ == False and new_piece.__color__ == piece.__color__:
                 raise SameColor()
             elif cell.__state__ == True:
                 return 'move'
@@ -117,7 +121,7 @@ class Board():
 
     def move_piece(self, piece, new_position):
         eat = None
-        cell = self.__grid__[new_position[0]][new_position[-1]]
+        cell = self.get_cell(new_position)
         try:
             self.on_board(new_position)
             if piece.__name__ == "Knight":
@@ -167,5 +171,16 @@ class Board():
             if eat == 'eat':
                 raise InvalidMove()
         return eat
+    
+    def get_cell(self, position):
+        row = position[0]
+        col = position[1]
+        cell = self.__grid__[row][col]
+        return cell
+
+    def get_piece(self, position):
+        cell = self.get_cell(position)
+        piece = cell.__piece__
+        return piece
 
     

@@ -4,7 +4,7 @@ from game.board import Board
 from game.pieces import Pieces, King, Pawn
 from game.player import Player
 from game.chess import Chess
-from game.exceptions import WrongPiece, OutOfBoard, LimitedMove, NotAnOption
+from game.exceptions import WrongPiece, OutOfBoard, LimitedMove, NotAnOption, InvalidPiece
 
 class TestChess(unittest.TestCase):
     def test_init(self):
@@ -131,4 +131,33 @@ class TestChess(unittest.TestCase):
         chess = Chess()
         end = chess.end_king([6,6])
         self.assertFalse(end)
+    
+    @patch('builtins.input', side_effect=['Rook'])
+    @patch('builtins.print')
+    def test_change_pawn(self, mock_input, mock_print):
+        chess = Chess()
+        board = chess.__board__
+        for lista in  board.__grid__:
+            for cell in lista:
+                cell.__state__ = True
+                cell.__piece__ = None
+        pawn = Pawn('Pawn', 'w', [6,3])
+        board.__pieces__ = [pawn]
+        board.set_piece_cell_begining()
+        chess.move_piece_board(pawn, [7,3])
+        self.assertEqual(board.get_piece([7,3]).__name__, 'Rook')
 
+    @patch('builtins.input', side_effect=['roook'])
+    @patch('builtins.print')
+    def test_change_pawn_invalid(self, mock_input, mock_print):
+        chess = Chess()
+        board = chess.__board__
+        for lista in  board.__grid__:
+            for cell in lista:
+                cell.__state__ = True
+                cell.__piece__ = None
+        pawn = Pawn('Pawn', 'w', [6,3])
+        board.__pieces__ = [pawn]
+        board.set_piece_cell_begining()
+        with self.assertRaises(InvalidPiece):
+            chess.move_piece_board(pawn, [7,3])

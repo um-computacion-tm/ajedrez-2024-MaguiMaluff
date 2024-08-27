@@ -1,6 +1,8 @@
 from game.board import Board
 from game.player import Player
-from game.exceptions import WrongPiece, OutOfBoard, NotAnOption
+from game.exceptions import WrongPiece, OutOfBoard, NotAnOption, InvalidPiece
+from game.pieces import Pieces, Rook, Queen, Bishop, Knight
+from emoji import emojize
 
 class Chess():
     def __init__(self):
@@ -21,6 +23,8 @@ class Chess():
             try:
                 finished = self.end_king(new_position)
                 self.__board__.move_piece(piece, new_position)
+                if piece.__name__ == 'Pawn':
+                    self.change_pawn(piece, new_position)
                 if finished:
                     self.end_game('y')
             except Exception as e:
@@ -93,3 +97,46 @@ class Chess():
     
     def print_board(self):
         self.__board__.print_board()
+    
+    def print_pieces(self):
+        images_white = {
+                        'Queen': emojize(':crown:'),
+                        'King': emojize(':elf:'),
+                        'Pawn' : emojize(':nose:'),
+                        'Knight': emojize(':unicorn:'),
+                        'Rook': emojize(':moai:'),
+                        'Bishop' : emojize(':trident_emblem:')
+                        }
+        images_black = {
+                        'Queen': emojize(':blossom:'),
+                        'King': emojize(':prince:'),
+                        'Pawn' : emojize(':bust_in_silhouette:'),
+                        'Knight': emojize(':horse_face:'),
+                        'Rook': emojize(':office_building:'),
+                        'Bishop' : emojize(':maple_leaf:')
+                        }
+        print('White Pieces: ', '\n', images_white, '\n', 'Black Pieces: ', '\n', images_black )
+    
+    def print_all(self):
+        self.print_pieces()
+        self.print_board()
+        self.print_turn()
+    
+    def change_pawn(self, piece, new_position):
+        if piece.change_pawn():
+            print('entre')
+            print('You`ve reach the end')
+            print('Choose between: Rook, Bishop, Knight and Queen')
+            new_piece = str(input('Which piece do you want?: ')).title()
+            if new_piece in ['Rook', 'Bishop', 'Knight', 'Queen']:
+                new_class = globals()[new_piece]
+                color = self.__player__.__color__
+                new_piece = new_class(new_piece, color, new_position)
+                cell = self.__board__.get_cell(new_position)
+                self.__board__.eat_piece(new_piece, new_position, cell)
+            else:
+                raise InvalidPiece
+                
+
+
+    
