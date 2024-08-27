@@ -191,3 +191,5 @@
 - Dockerfile
 
 - print_pieces
+
+- coveragerc and README
