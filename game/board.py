@@ -4,37 +4,24 @@ from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, OutOfBoa
 
 class Board():
     def __init__(self):         ### Declaracion de cada pieza, con nombre, color y posicion al inicio del juego
-            self.__pieces__ = [ Queen(piece="Queen",  color="w", initial_position=[0, 3]),   Queen(piece="Queen",   color="b", initial_position=[7, 3]),
-                                King(piece="King",   color="w", initial_position=[0, 4]),    King(piece="King",    color="b", initial_position=[7, 4]),
-                                Rook(piece="Rook" ,  color="w", initial_position=[0, 0]),    Rook(piece="Rook",    color="b", initial_position=[7, 0]),
-                                Rook(piece="Rook" ,  color="w", initial_position=[0, 7]),    Rook(piece="Rook",    color="b", initial_position=[7, 7]),
-                                Bishop(piece="Bishop", color="w", initial_position=[0, 2]),  Bishop(piece="Bishop",  color="b", initial_position=[7, 2]),
-                                Bishop(piece="Bishop", color="w", initial_position=[0, 5]),  Bishop(piece="Bishop",  color="b", initial_position=[7, 5]),
-                                Knight(piece="Knight", color="w", initial_position=[0, 1]),  Knight(piece="Knight",  color="b", initial_position=[7, 1]),
-                                Knight(piece="Knight", color="w", initial_position=[0, 6]),  Knight(piece="Knight",  color="b", initial_position=[7, 6]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 0]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 0]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 1]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 1]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 2]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 2]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 3]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 3]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 4]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 4]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 5]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 5]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 6]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 6]),
-                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 7]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 7]),]
+            self.__pieces__ = [ Queen(piece="Queen",  color="w", initial_position=[0, 3]),   Queen(piece="Queen",   color="b", initial_position=[7, 3]),King(piece="King",   color="w", initial_position=[0, 4]),    King(piece="King",    color="b", initial_position=[7, 4]),
+                                Rook(piece="Rook" ,  color="w", initial_position=[0, 0]),    Rook(piece="Rook",    color="b", initial_position=[7, 0]), Rook(piece="Rook" ,  color="w", initial_position=[0, 7]),    Rook(piece="Rook",    color="b", initial_position=[7, 7]),
+                                Bishop(piece="Bishop", color="w", initial_position=[0, 2]),  Bishop(piece="Bishop",  color="b", initial_position=[7, 2]), Bishop(piece="Bishop", color="w", initial_position=[0, 5]),  Bishop(piece="Bishop",  color="b", initial_position=[7, 5]),
+                                Knight(piece="Knight", color="w", initial_position=[0, 1]),  Knight(piece="Knight",  color="b", initial_position=[7, 1]), Knight(piece="Knight", color="w", initial_position=[0, 6]),  Knight(piece="Knight",  color="b", initial_position=[7, 6]),
+                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 0]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 0]), Pawn(piece="Pawn" ,  color="w", initial_position=[1, 1]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 1]),
+                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 2]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 2]), Pawn(piece="Pawn" ,  color="w", initial_position=[1, 3]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 3]),
+                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 4]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 4]), Pawn(piece="Pawn" ,  color="w", initial_position=[1, 5]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 5]),
+                                Pawn(piece="Pawn" ,  color="w", initial_position=[1, 6]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 6]), Pawn(piece="Pawn" ,  color="w", initial_position=[1, 7]),    Pawn(piece="Pawn" ,   color="b", initial_position=[6, 7]),]
             
             """On the grid, each square is a cell, with state True(meaning is empty), and piece None"""
             self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
     def print_board(self):
         """Calls for functions to print the full board"""
-        self.print_header()
+        print(' '+'-'*64)
+        print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H"), '\n','-'*64)
         self.print_pieces()
-
-    def print_header(self):
-        """Prints the header, formats the letters"""
-        print(' '+'-'*64)
-        print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H" ))
-        print(' '+'-'*64)
-    
+        
     def print_pieces(self):
         """Calls print_row 8 times"""
         for i in range(8):
@@ -56,8 +43,7 @@ class Board():
                     row.append('  ' + str(piece.__image__) + '  |')
                 else:
                     row.append('      |')
-        print('  {:^6}|{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}'.format(*row))
-        print(' '+'-'*64)
+        print('  {:^6}|{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}'.format(*row), '\n', '-'*64)
 
                 
     def set_piece_cell_begining(self):
@@ -66,9 +52,7 @@ class Board():
         for piece in self.__pieces__:
             piece.set_images()
             position = piece.__position__
-            x = position[0]
-            y = position[1]
-            cell = self.get_cell([x,y])
+            cell = self.get_cell([position[0],position[1]])
             cell.new_piece(piece)
 
 
@@ -135,9 +119,7 @@ class Board():
                 If the cell its occupied and the piece intended to move
                 has the same color as the piece on the cell.
             """
-        x = squares[0]
-        y = squares[1]
-        new_piece = self.get_piece([x, y])
+        new_piece = self.get_piece([squares[0], squares[1]])
         if cell.__state__ == False and new_piece.__color__ == piece.__color__:
             raise SameColor("Oops! You`re trying to eat your own piece")
         elif cell.__state__ == True:
@@ -180,11 +162,9 @@ class Board():
             """
         row = new_position[0]
         column = new_position[1]
-        if row < 0 or row > 7:
+        if row < 0 or row > 7 or column < 0 or column > 7:
             raise OutOfBoard("Please choose a valid position")
-        elif column < 0 or column > 7:
-            raise OutOfBoard("Please choose a valid position")
-
+        
     def move_piece(self, piece, new_position):
         """ In charge of verification for the piece movement. First checks
             if the new position is on board calling on_board(). Then checks 
@@ -233,9 +213,7 @@ class Board():
             piece : Piece object
                 Piece that has already moved
         """
-        row = piece.__position__[0]
-        column = piece.__position__[1]
-        cell = self.get_cell([row, column])
+        cell = self.get_cell([piece.__position__[0], piece.__position__[1]])
         cell.moved()
 
 
@@ -266,10 +244,7 @@ class Board():
             """
         row = piece.__position__[0]
         column = piece.__position__[1]
-        eating = [[row + 1, column + 1],
-                  [row + 1, column - 1], 
-                  [row - 1, column + 1],
-                  [row - 1, column - 1]]
+        eating = [[row + 1, column + 1], [row + 1, column - 1], [row - 1, column + 1],[row - 1, column - 1]]
         eat = self.check_squares_one(piece, new_position, cell)
         if new_position in eating:
             if eat != 'eat':

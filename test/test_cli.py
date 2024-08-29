@@ -22,7 +22,7 @@ class TestCli(unittest.TestCase):
         chess = Chess()
         play(chess)
         self.assertEqual(mock_input.call_count, 1)
-        self.assertEqual(mock_print.call_count, 23)
+        self.assertEqual(mock_print.call_count, 14)
         self.assertEqual(mock_chess_move.call_count, 0)
 
     @patch('builtins.input', side_effect=['1', 'A', '2', 'hola'])
@@ -32,7 +32,7 @@ class TestCli(unittest.TestCase):
         chess = Chess()
         play(chess)
         self.assertEqual(mock_input.call_count, 4)
-        self.assertEqual(mock_print.call_count, 23)
+        self.assertEqual(mock_print.call_count, 14)
         self.assertEqual(mock_chess_move.call_count, 0)
     
     @patch('builtins.input', side_effect=['1', 'A', '2', 'hola'])
@@ -42,7 +42,7 @@ class TestCli(unittest.TestCase):
         chess = Chess()
         play(chess)
         self.assertEqual(mock_input.call_count, 4)
-        self.assertEqual(mock_print.call_count, 23)
+        self.assertEqual(mock_print.call_count, 14)
         self.assertEqual(mock_chess_move.call_count, 0)
     
     @patch('builtins.input', side_effect=['1', 'A', '2', 'A', 'y'],)
@@ -51,7 +51,7 @@ class TestCli(unittest.TestCase):
     def test_play_works(self, mock_chess_move, mock_print, mock_input):
         main()
         self.assertEqual(mock_input.call_count, 5)
-        self.assertEqual(mock_print.call_count, 24)
+        self.assertEqual(mock_print.call_count, 15)
         self.assertEqual(mock_chess_move.call_count, 1)
     
 if __name__ == '__main__':
