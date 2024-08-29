@@ -146,6 +146,16 @@ class TestChess(unittest.TestCase):
         board.set_piece_cell_begining()
         chess.move_piece_board(pawn, [7,3])
         self.assertEqual(board.get_piece([7,3]).__name__, 'Rook')
+    
+    def test_get_piece_out(self):
+        chess = Chess()
+        with self.assertRaises(OutOfBoard):
+            chess.get_piece(8,8)
+
+    def test_get_piece_none(self):
+        chess = Chess()
+        with self.assertRaises(WrongPiece):
+            chess.get_piece(2,2)
 
     @patch('builtins.input', side_effect=['roook'])
     @patch('builtins.print')

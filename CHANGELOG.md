@@ -178,6 +178,8 @@
 
 - on_board from Pieces
 
+- Function knight from Board
+
 # 27/08/2024
 
 # ADDED
@@ -195,3 +197,9 @@
 - print_pieces
 
 - coveragerc and README
+
+# 29/08/2024
+
+# DELETED
+
+- print_header from board

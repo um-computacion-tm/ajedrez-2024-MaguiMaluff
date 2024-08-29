@@ -256,7 +256,7 @@ class Knight(Pieces):
     def movement(self, new_position):
         try:
             self.limit(new_position)
-            return(new_position)
+            return([new_position])
         except Exception as e:
             raise
     
