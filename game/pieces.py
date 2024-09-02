@@ -24,20 +24,12 @@ class Pieces():
     def set_images(self):
         """ Sets the emoji representation of the piece based on its color."""
         images_white = {
-                        'Queen': emojize(':crown:'),
-                        'King': emojize(':elf:'),
-                        'Pawn' : emojize(':nose:'),
-                        'Knight': emojize(':unicorn:'),
-                        'Rook': emojize(':moai:'),
-                        'Bishop' : emojize(':trident_emblem:')
+                        'Queen': emojize(':crown:'), 'King': emojize(':elf:'), 'Pawn' : emojize(':nose:'),
+                        'Knight': emojize(':unicorn:'), 'Rook': emojize(':moai:'), 'Bishop' : emojize(':trident_emblem:')
                         }
         images_black = {
-                        'Queen': emojize(':blossom:'),
-                        'King': emojize(':prince:'),
-                        'Pawn' : emojize(':bust_in_silhouette:'),
-                        'Knight': emojize(':horse_face:'),
-                        'Rook': emojize(':office_building:'),
-                        'Bishop' : emojize(':maple_leaf:')
+                        'Queen': emojize(':blossom:'), 'King': emojize(':prince:'),'Pawn' : emojize(':bust_in_silhouette:'),
+                        'Knight': emojize(':horse_face:'), 'Rook': emojize(':office_building:'), 'Bishop' : emojize(':maple_leaf:')
                         }
         if self.__color__ == 'w':
             self.__image__ = images_white[self.__name__]
@@ -295,9 +287,7 @@ class Pieces():
     
     def valid_or_invalid(self, new_position):
         """ Determines if the move is valid based on the piece's movement
-            rules. The move is valid if it's either a straight or diagonal 
-            movement. A movement cannot be both straight and diagonal at the 
-            same time (except for the knight).
+            rules. The move is valid if it's either a straight or diagonal movement.
 
         Parameters
         ----------

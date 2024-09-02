@@ -269,9 +269,7 @@ class Board():
             position : list
                 Coordinates of the cell required
         """
-        row = position[0]
-        col = position[1]
-        cell = self.__grid__[row][col]
+        cell = self.__grid__[position[0]][position[1]]
         return cell
 
     def get_piece(self, position):
