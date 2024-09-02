@@ -33,7 +33,7 @@ class Board():
             self.print_rows(i)
             
     def print_rows(self, i):
-        """Row is a list where an image is added if the cell is occupied or 
+        """ Row is a list where an image is added if the cell is occupied or 
             spaces if is not. The row is then format. 
 
             Parameter

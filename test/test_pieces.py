@@ -74,6 +74,10 @@ class TestPieces(unittest.TestCase):
             queen = Queen('Queen', 'w', [0,0])
             with self.assertRaises(InvalidMove):
                 queen.valid_or_invalid([3,1])
+        
+        def test_move(self):
+            piece = Pieces('Queen', 'b', [0, 4])
+            piece.movement()
 
         
 
