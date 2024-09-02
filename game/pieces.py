@@ -12,8 +12,8 @@ class Pieces():
     color : str
         The color of the chess piece.
     initial_position : list
-        The initial position of the piece on the board [row, column].
-    """
+        The initial position of the piece on the board [row, column]."""
+    
     def __init__(self, piece, color, initial_position):
         self.__name__ = piece
         self.__color__ = color
@@ -42,8 +42,8 @@ class Pieces():
         Parameters
         ----------
         new_position : list
-            The new position [row, column] of the piece on the board.
-        """
+            The new position [row, column] of the piece on the board."""
+        
         self.__position__ = new_position
 
     def straight_line(self, new_position):
@@ -55,15 +55,8 @@ class Pieces():
         Parameters
         ----------
         new_position : list
-            The new position [row, column] the piece is moving to.
-        
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through in a straight line.
-        False
-            If the movement is not straight.
-        """
+            The new position [row, column] the piece is moving to. """
+
         row = self.__position__[0]
         column = self.__position__[1]
         if row != new_position[0] and column != new_position[1]:
@@ -85,13 +78,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
+            The new position [row, column] the piece is moving to."""
         
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through.
-        """
         squares = []
         if column < new_position[1]:
             for i in range(new_position[1] - column):
@@ -111,13 +99,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
+            The new position [row, column] the piece is moving to."""
         
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through.
-        """
         squares = []
         if row < new_position[0]:
             for x in range(new_position[0] - row):
@@ -138,15 +121,8 @@ class Pieces():
         Parameters
         ----------
         new_position : list
-            The new position [row, column] the piece is moving to.
-        
-        Returns
-        -------
-        square : list
-            A list of positions the piece passes through diagonally.
-        False
-            If the movement is not diagonal.
-        """
+            The new position [row, column] the piece is moving to."""
+
         row = self.__position__[0]
         column = self.__position__[1]
         if row != new_position[0] and column != new_position[1]:
@@ -172,13 +148,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
-        
-        Returns
-        -------
-        str
-            The name of the function corresponding to the type of diagonal movement.
-        """
+            The new position [row, column] the piece is moving to."""
+
         if row > new_position[0] and column > new_position[1]:
             return "left_up"
         elif row > new_position[0] and column < new_position[1]:
@@ -198,13 +169,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
+            The new position [row, column] the piece is moving to."""
         
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through diagonally.
-        """
         squares = []
         for i in range(new_position[0] - row):
                 row += 1
@@ -222,13 +188,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
+            The new position [row, column] the piece is moving to."""
         
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through diagonally.
-        """
         squares = []
         for i in range(new_position[1] - column):
                 row -= 1
@@ -246,13 +207,9 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
+            The new position [row, column] the piece is moving to."""
         
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through diagonally.
-        """
+
         squares = []
         for i in range(new_position[0] - row):
             row += 1
@@ -270,13 +227,8 @@ class Pieces():
         column : int
             The current column of the piece.
         new_position : list
-            The new position [row, column] the piece is moving to.
-        
-        Returns
-        -------
-        squares : list
-            A list of positions the piece passes through diagonally.
-        """
+            The new position [row, column] the piece is moving to."""
+
         squares = []
         for i in range(row - new_position[0]):
             row -= 1
@@ -293,17 +245,12 @@ class Pieces():
         ----------
         new_position : list
             The new position [row, column] the piece is moving to.
-        
-        Returns
-        -------
-        square : list
-            A list of positions the piece passes through if the move is valid.
-        
+
         Raises
         ------
         InvalidMove
-            If the move is not valid (i.e., neither straight nor diagonal).
-        """
+            If the move is not valid (i.e., neither straight nor diagonal)."""
+        
         straight = self.straight_line(new_position)
         diagonal = self.diagonal(new_position)
         if diagonal == straight:
