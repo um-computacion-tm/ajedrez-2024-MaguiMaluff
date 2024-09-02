@@ -1,7 +1,9 @@
 import unittest
 from io import StringIO
 import sys
-from game.pieces import Pieces, Queen, King, Knight, Pawn, Rook, Bishop
+from game.pieces import Pieces
+from game.queen import Queen
+from game.pawn import Pawn
 from game.board import Board
 from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, LimitedMove, OutOfBoard
 

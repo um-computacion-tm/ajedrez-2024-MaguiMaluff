@@ -203,3 +203,9 @@
 # DELETED
 
 - print_header from board
+
+# 02/09/2024
+
+# ADDED
+
+- A file for each piece and for their tests.

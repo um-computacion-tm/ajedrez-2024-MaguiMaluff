@@ -1,4 +1,9 @@
-from game.pieces import Pieces, Queen, King, Rook, Bishop, Knight, Pawn
+from game.queen import Queen
+from game.king import King
+from game.rook import Rook
+from game.bishop import Bishop
+from game.knight import Knight
+from game.pawn import Pawn
 from game.cell import Cell
 from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, OutOfBoard
 
@@ -17,7 +22,7 @@ class Board():
             self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
     def print_board(self):
-        """Calls for functions to print the full board"""
+        """Prints the header, then calls print_pieces"""
         print(' '+'-'*64)
         print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H"), '\n','-'*64)
         self.print_pieces()
