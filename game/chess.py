@@ -1,7 +1,11 @@
 from game.board import Board
 from game.player import Player
 from game.exceptions import WrongPiece, OutOfBoard, NotAnOption, InvalidPiece
-from game.pieces import Pieces, Rook, Queen, Bishop, Knight
+from game.pieces import Pieces
+from game.rook import Rook
+from game.bishop import Bishop
+from game.knight import Knight
+from game.queen import Queen
 from emoji import emojize
 
 class Chess():

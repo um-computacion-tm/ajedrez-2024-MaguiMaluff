@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
 from game.board import Board
-from game.pieces import Pieces, King, Pawn
+from game.pieces import Pieces
+from game.king import King
+from game.pawn import Pawn
 from game.player import Player
 from game.chess import Chess
 from game.exceptions import WrongPiece, OutOfBoard, LimitedMove, NotAnOption, InvalidPiece

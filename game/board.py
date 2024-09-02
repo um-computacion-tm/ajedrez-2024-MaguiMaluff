@@ -1,4 +1,9 @@
-from game.pieces import Pieces, Queen, King, Rook, Bishop, Knight, Pawn
+from game.queen import Queen
+from game.king import King
+from game.rook import Rook
+from game.bishop import Bishop
+from game.knight import Knight
+from game.pawn import Pawn
 from game.cell import Cell
 from game.exceptions import InvalidMove, GoingThroughAPiece, SameColor, OutOfBoard
 
@@ -17,7 +22,7 @@ class Board():
             self.__grid__ = ([[Cell(True, None) for _ in range(8)] for _ in range (8)])    
 
     def print_board(self):
-        """Calls for functions to print the full board"""
+        """Prints the header, then calls print_pieces"""
         print(' '+'-'*64)
         print('   {:^5}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|'.format("", "A", "B" , "C", "D" , "E" , "F" , "G" ,"H"), '\n','-'*64)
         self.print_pieces()
@@ -28,7 +33,7 @@ class Board():
             self.print_rows(i)
             
     def print_rows(self, i):
-        """Row is a list where an image is added if the cell is occupied or 
+        """ Row is a list where an image is added if the cell is occupied or 
             spaces if is not. The row is then format. 
 
             Parameter
@@ -264,9 +269,7 @@ class Board():
             position : list
                 Coordinates of the cell required
         """
-        row = position[0]
-        col = position[1]
-        cell = self.__grid__[row][col]
+        cell = self.__grid__[position[0]][position[1]]
         return cell
 
     def get_piece(self, position):
