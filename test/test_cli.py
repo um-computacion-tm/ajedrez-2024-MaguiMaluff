@@ -42,7 +42,7 @@ class TestCli(unittest.TestCase):
     def test_play_works(self, mock_chess_move, mock_print, mock_input):
         main()
         self.assertEqual(mock_input.call_count, 6)
-        self.assertEqual(mock_print.call_count, 14)
+        self.assertEqual(mock_print.call_count, 15)
         self.assertEqual(mock_chess_move.call_count, 1)
     
 if __name__ == '__main__':
