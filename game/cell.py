@@ -28,3 +28,9 @@ class Cell():
         """
         self.__state__ = False
         self.__piece__ = piece
+    
+    def get_state(self):
+        return self.__state__
+    
+    def get_piece(self):
+        return self.__piece__

@@ -61,10 +61,9 @@ class Chess():
                 the player can't move that piece
 
         """
-        if piece.__color__ == self.__player__.__color__:
+        if piece.get_color() == self.__player__.get_color():
             try:
                 finished = self.end_king(new_position)
-                self.no_pieces()
                 self.__board__.move_piece(piece, new_position)
                 if piece.__name__ == 'Pawn':
                     self.change_pawn(piece, new_position)
@@ -94,7 +93,7 @@ class Chess():
             OutOfBoard
                 When the row and column are greater or equal to 8 or less than 0.
         """
-        if row < 8 and column < 8 and row >= 0 and column >= 0:
+        if row <= 7 and column <= 7 and row >= 0 and column >= 0:
             piece = self.__board__.get_piece([row, column])
             if piece:
                 return piece
@@ -141,20 +140,6 @@ class Chess():
         """Ends the game by setting __playing__ to False"""
         self.__playing__= False
     
-    def no_pieces(self):
-        """ Once the number of plays is greater than 32, it counts the pieces
-            left on the board. If the sum is equal or less than 1, the game ends.
-        """
-        left_pieces = 0
-        if self.__number__ > 32:
-            for i in self.__board__.__grid__:
-                for x in i:
-                    if x.__state__ == False:
-                        left_pieces += 1
-            if left_pieces <= 1:
-                self.end_game()
-                print("No pieces left! End of the game")
-    
     def end_king(self, new_position):
         """ Checks if the King is being capture. Returns True if it is,
             and False if its not.
@@ -167,8 +152,10 @@ class Chess():
         row = new_position[0]
         col = new_position[1]
         cell = self.__board__.get_cell([row, col])
-        if cell.__state__ == False:
-            if cell.__piece__.__name__ == "King":
+        if cell.get_state() == False:
+            piece = cell.get_piece()
+            piece_name = piece.get_name()
+            if piece_name == "King":
                 return True
             else:
                 return False
@@ -183,9 +170,9 @@ class Chess():
         """ Prints the turn, id from the player and color.
         """
         color = None
-        if self.__player__.__color__ == 'w': 
+        if self.__player__.get_color() == 'w': 
             color = 'White'
-        elif self.__player__.__color__ == 'b':
+        elif self.__player__.get_color() == 'b':
             color = 'Black'
         print("Turn --> Player: ", self.__turn__," Color: ", color)
     
@@ -236,7 +223,7 @@ class Chess():
             new_piece = str(input('Which piece do you want?: ')).title()
             if new_piece in ['Rook', 'Bishop', 'Knight', 'Queen']:
                 new_class = globals()[new_piece]
-                color = self.__player__.__color__
+                color = self.__player__.get_color()
                 new_piece = new_class(new_piece, color, new_position)
                 cell = self.__board__.get_cell(new_position)
                 self.__board__.eat_piece(new_piece, new_position, cell)

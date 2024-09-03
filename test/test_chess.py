@@ -133,19 +133,6 @@ class TestChess(unittest.TestCase):
         chess.__board__.set_piece_cell_begining()
         chess.move_piece_board(pawn, [5,6])
         self.assertEqual(chess.__playing__, False)
-
-    @patch('builtins.print')
-    def test_check_ending(self, mock_print):
-        chess = Chess()
-        chess.__number__ = 33
-        for lista in  chess.__board__.__grid__:
-            for cell in lista:
-                cell.__state__ = True
-        king = King('King', 'b', [5,6])
-        chess.__board__.__pieces__ = [king]
-        chess.__board__.set_piece_cell_begining()
-        chess.no_pieces()
-        self.assertEqual(chess.__playing__, False)
     
     def test_end_king_false(self):
         chess = Chess()

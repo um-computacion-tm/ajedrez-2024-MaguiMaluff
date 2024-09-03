@@ -262,6 +262,24 @@ class Pieces():
     
     def movement(self, new_position):
         pass
+
+    def get_image(self):
+        return self.__image__
+    
+    def get_color(self):
+        return self.__color__
+
+    def get_name(self):
+        return self.__name__
+    
+    def get_row(self):
+        return self.__position__[0]
+    
+    def get_col(self):
+        return self.__position__[1]
+    
+    def get_position(self):
+        return self.__position__
     
 
 
