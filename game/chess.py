@@ -138,6 +138,7 @@ class Chess():
             raise ValueError("Invalid column letter")
         
     def end_game(self):
+        """Ends the game by setting __playing__ to False"""
         self.__playing__= False
     
     def no_pieces(self):
@@ -253,7 +254,7 @@ class Chess():
             Raises
             ------
             NotAnOption
-                When end is something else tha y or n.
+                When end is something else than y or n.
         """
         if end == 'y':
             self.next_turn()
