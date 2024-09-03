@@ -65,7 +65,7 @@ class Chess():
             try:
                 finished = self.end_king(new_position)
                 self.__board__.move_piece(piece, new_position)
-                if piece.__name__ == 'Pawn':
+                if piece.get_name() == 'Pawn':
                     self.change_pawn(piece, new_position)
                 if finished:
                     self.end_game()
@@ -164,7 +164,7 @@ class Chess():
         """ Prints a message for the end of the game.
         """
         print('End of game!')
-        print('Player: ', self.__player__.__id__, ' wins!')
+        print('Player: ', self.__player__.get_id(), ' wins!')
 
     def print_turn(self):
         """ Prints the turn, id from the player and color.
