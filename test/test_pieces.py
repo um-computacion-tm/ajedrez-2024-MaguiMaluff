@@ -78,6 +78,11 @@ class TestPieces(unittest.TestCase):
         def test_move(self):
             piece = Pieces('Queen', 'b', [0, 4])
             piece.movement([0, 8])
+        
+        def test_get_positition(self):
+            piece = Pieces('Queen', 'b', [0, 4])
+            self.assertEqual(piece.get_position(), [0,4])
+
 
         
 

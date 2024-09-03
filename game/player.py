@@ -10,3 +10,9 @@ class Player():
         self.__color__ = color
         self.__id__ = id
         self.__points__ = 0
+
+    def get_color(self):
+        return self.__color__
+    
+    def get_id(self):
+        return self.__id__

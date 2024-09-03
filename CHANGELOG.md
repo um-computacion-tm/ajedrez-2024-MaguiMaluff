@@ -211,3 +211,14 @@
 - A file for each piece and for their tests.
 
 - check_end, now the game ends when both players agree
+
+# 03/09/2024
+
+# DELETED
+
+- no_pieces, if the game ends because theres 1 piece on the board, at least 1 King should've been captured, and that situation its check every turn with end_king. Same if theres a player with no pieces, the last piece captured would be the King.
+
+# ADDED
+
+- In player, cell and piece, functions to access their atributtes.
+

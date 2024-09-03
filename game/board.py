@@ -1,3 +1,4 @@
+from game.pieces import Pieces
 from game.queen import Queen
 from game.king import King
 from game.rook import Rook
@@ -43,9 +44,9 @@ class Board():
         row = [i] 
         for x in range(8):
                 cell = self.get_cell([i,x])
-                if cell.__state__ == False:
+                if cell.get_state() == False:
                     piece = self.get_piece([i,x])
-                    row.append('  ' + str(piece.__image__) + '  |')
+                    row.append('  ' + str(piece.get_image()) + '  |')
                 else:
                     row.append('      |')
         print('  {:^6}|{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}{:^6}'.format(*row), '\n', '-'*64)
@@ -56,8 +57,7 @@ class Board():
             calls cell.new_piece, changing the cell state and piece"""
         for piece in self.__pieces__:
             piece.set_images()
-            position = piece.__position__
-            cell = self.get_cell([position[0],position[1]])
+            cell = self.get_cell([piece.get_row(), piece.get_col()])
             cell.new_piece(piece)
 
 
@@ -88,7 +88,7 @@ class Board():
             x = square[0]
             y = square[1]
             old_cell = self.get_cell([x,y])
-            cell_state = old_cell.__state__
+            cell_state = old_cell.get_state()
             if cell_state == False and [x , y] != squares[-1]:
                 raise GoingThroughAPiece("Oops! You`re trying to go through a piece")
             elif cell_state == False and [x , y] == squares[-1]:
@@ -125,9 +125,9 @@ class Board():
                 has the same color as the piece on the cell.
             """
         new_piece = self.get_piece([squares[0], squares[1]])
-        if cell.__state__ == False and new_piece.__color__ == piece.__color__:
+        if cell.get_state() == False and new_piece.get_color() == piece.get_color():
             raise SameColor("Oops! You`re trying to eat your own piece")
-        elif cell.__state__ == True:
+        elif cell.get_state() == True:
             return 'move'
         else: 
             return "eat"
@@ -194,7 +194,7 @@ class Board():
         cell = self.get_cell(new_position)
         try:
             self.on_board(new_position) 
-            if piece.__name__ == "Pawn":
+            if piece.get_name() == "Pawn":
                 piece.movement(new_position)
                 eat = self.pawn(piece, new_position, cell)
             else:
@@ -218,7 +218,7 @@ class Board():
             piece : Piece object
                 Piece that has already moved
         """
-        cell = self.get_cell([piece.__position__[0], piece.__position__[1]])
+        cell = self.get_cell([piece.get_row(), piece.get_col()])
         cell.moved()
 
 
@@ -247,8 +247,8 @@ class Board():
                 If the movement is diagonal and the piece is not capturing anything.
                 If the movement is straight and the piece is capturing something.
             """
-        row = piece.__position__[0]
-        column = piece.__position__[1]
+        row = piece.get_row()
+        column = piece.get_col()
         eating = [[row + 1, column + 1], [row + 1, column - 1], [row - 1, column + 1],[row - 1, column - 1]]
         eat = self.check_squares_one(piece, new_position, cell)
         if new_position in eating:
@@ -283,7 +283,7 @@ class Board():
                 Coordinates of the cell required
         """
         cell = self.get_cell(position)
-        piece = cell.__piece__
+        piece = cell.get_piece()
         return piece
 
     

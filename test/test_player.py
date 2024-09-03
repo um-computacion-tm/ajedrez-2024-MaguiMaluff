@@ -13,3 +13,11 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(player_1.__color__, 'b')
         self.assertEqual(player_1.__points__, 0)
         self.assertEqual(player_1.__id__, 4)
+    
+    def test_get_id(self):
+        player = Player('b', 34)
+        self.assertEqual(player.get_id(), 34)
+
+    def test_get_color(self):
+        player = Player('w', 4)
+        self.assertEqual(player.get_color(), 'w')
