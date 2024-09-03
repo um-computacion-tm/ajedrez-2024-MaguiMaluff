@@ -65,21 +65,39 @@ class TestChess(unittest.TestCase):
         with self.assertRaises(OutOfBoard):
             chess.get_piece(8,4)
     
+    @patch('builtins.input', side_effect=['y'])
     @patch('builtins.print')
-    def test_end_game_y(self, mock_print):
+    def test_end_game_y(self, mock_print, mock_input):
         chess = Chess()
-        end = chess.end_game('y')
+        chess.check_end('y')
         self.assertEqual(chess.__playing__, False)
 
-    def test_end_game_n(self):
+    @patch('builtins.input', side_effect=['Y'])
+    @patch('builtins.print')
+    def test_end_game_y_upp(self, mock_print, mock_input):
         chess = Chess()
-        end = chess.end_game('N')
+        chess.check_end('y')
+        self.assertEqual(chess.__playing__, False)
+
+    @patch('builtins.input', side_effect=['n'])
+    @patch('builtins.print')
+    def test_end_game_n(self,  mock_print, mock_input):
+        chess = Chess()
+        end = chess.check_end('y')
         self.assertEqual(chess.__playing__, True)
 
-    def test_end_game_m(self):
+    @patch('builtins.input', side_effect=['m'])
+    @patch('builtins.print')
+    def test_end_game_m(self, mock_print, mock_input):
         chess = Chess()
         with self.assertRaises(NotAnOption):
-            chess.end_game('m')
+            chess.check_end('y')
+    
+    @patch('builtins.print')
+    def test_end_game_h(self, mock_print):
+        chess = Chess()
+        with self.assertRaises(NotAnOption):
+            chess.check_end('h')
 
     def test_playin(self):
         chess = Chess()
@@ -126,7 +144,7 @@ class TestChess(unittest.TestCase):
         king = King('King', 'b', [5,6])
         chess.__board__.__pieces__ = [king]
         chess.__board__.set_piece_cell_begining()
-        chess.check_ending()
+        chess.no_pieces()
         self.assertEqual(chess.__playing__, False)
     
     def test_end_king_false(self):

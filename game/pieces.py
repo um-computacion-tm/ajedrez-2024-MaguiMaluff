@@ -260,7 +260,7 @@ class Pieces():
         elif straight != False:
             return straight
     
-    def movement(self):
+    def movement(self, new_position):
         pass
     
 

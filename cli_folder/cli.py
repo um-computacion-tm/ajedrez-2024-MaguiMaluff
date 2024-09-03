@@ -16,8 +16,8 @@ def play(chess):
         new_col = str(input("To Column: "))
         new_col = chess.get_column(new_col)
         chess.move_piece_board(chess.get_piece(row, column), [new_row, new_col])
-        end = str(input("End Game? y/n"))
-        chess.end_game(end)
+        end = str(input("End Game? y/n")).lower()
+        chess.check_end(end)
         chess.next_turn()
 
     except Exception as e:

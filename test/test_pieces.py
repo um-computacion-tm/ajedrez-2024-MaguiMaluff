@@ -77,7 +77,7 @@ class TestPieces(unittest.TestCase):
         
         def test_move(self):
             piece = Pieces('Queen', 'b', [0, 4])
-            piece.movement()
+            piece.movement([0, 8])
 
         
 
