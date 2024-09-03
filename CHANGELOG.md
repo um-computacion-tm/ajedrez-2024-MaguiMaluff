@@ -209,3 +209,5 @@
 # ADDED
 
 - A file for each piece and for their tests.
+
+- check_end, now the game ends when both players agree

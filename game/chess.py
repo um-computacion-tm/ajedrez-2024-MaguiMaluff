@@ -261,6 +261,7 @@ class Chess():
             end = input("Do you agree? y/n").lower()
             if end == 'y':
                 self.end_game()
+                print("End of game")
             elif end == 'n':
                 self.next_turn()
                 print("Agree to disagree! Keep playing!")
