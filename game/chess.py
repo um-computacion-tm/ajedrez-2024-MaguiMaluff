@@ -64,12 +64,13 @@ class Chess():
         if piece.__color__ == self.__player__.__color__:
             try:
                 finished = self.end_king(new_position)
+                self.no_pieces()
                 self.__board__.move_piece(piece, new_position)
                 if piece.__name__ == 'Pawn':
                     self.change_pawn(piece, new_position)
                 if finished:
-                    self.end_game('y')
-                    return False
+                    self.end_game()
+                    self.msg()
             except Exception as e:
                 raise
         else:
@@ -136,26 +137,10 @@ class Chess():
         else:
             raise ValueError("Invalid column letter")
         
-    def end_game(self, end):
-        """Ends the game if end is y.
-
-            Parameters
-            ----------
-            end : str
-                y or no, y for yes, n for n.
-            
-            Raises
-            ------
-            NotAnOption
-                When end is something else tha y or n.
-        """
-        if end.lower() == 'y':
-            self.__playing__= False
-            self.msg()
-        elif end.lower() != 'n':
-            raise NotAnOption("Please enter y or n")
+    def end_game(self):
+        self.__playing__= False
     
-    def check_ending(self):
+    def no_pieces(self):
         """ Once the number of plays is greater than 32, it counts the pieces
             left on the board. If the sum is equal or less than 1, the game ends.
         """
@@ -166,7 +151,8 @@ class Chess():
                     if x.__state__ == False:
                         left_pieces += 1
             if left_pieces <= 1:
-                self.end_game('y')
+                self.end_game()
+                print("No pieces left! End of the game")
     
     def end_king(self, new_position):
         """ Checks if the King is being capture. Returns True if it is,
@@ -255,7 +241,33 @@ class Chess():
                 self.__board__.eat_piece(new_piece, new_position, cell)
             else:
                 raise InvalidPiece("Please choose a valid Piece")
-                
+    
+    def check_end(self, end):
+        """ Ends the game if both players agree.
+
+            Parameters
+            ----------
+            end : str
+                y or no, y for yes, n for n.
+            
+            Raises
+            ------
+            NotAnOption
+                When end is something else tha y or n.
+        """
+        if end == 'y':
+            self.next_turn()
+            self.print_turn()
+            end = input("Do you agree? y/n").lower()
+            if end == 'y':
+                self.end_game()
+            elif end == 'n':
+                self.next_turn()
+                print("Agree to disagree! Keep playing!")
+            elif end != 'n':
+                raise NotAnOption("Please enter y or n")
+        elif end != 'n':
+            raise NotAnOption("Please enter y or n")
 
 
     
